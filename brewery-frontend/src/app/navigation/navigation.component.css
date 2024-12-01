@@ -1,0 +1,74 @@
+.navbar {
+  width: 100%;
+  padding: 1rem 2rem;
+  color: var(--brew-nav-color);
+  background-color: var(--brew-nav-backgound-primary);
+}
+
+.navbar .navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--brew-nav-color);
+}
+
+.navbar-nav .nav-link {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  color: var(--brew-nav-color);
+}
+
+.navbar-nav .nav-link.active {
+  color: var(--brew-nav-color-accent);
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .navbar .navbar-nav {
+    margin-top: 1rem;
+  }
+
+  .navbar .nav-link {
+    font-size: 1.2rem;
+  }
+}
+
+
+/*  color mode switch */
+
+.form-check-input:checked {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+/*  when checked */
+.form-check-input:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);  /* Green focus shadow */
+}
+
+/*  when unchecked */
+.form-check-input {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+/* checked thumb color (circle inside the toggle) */
+.form-check-input:checked::before {
+  background-color: white;  /* Thumb color when checked */
+}
+
+/* unchecked thumb color (circle inside the toggle) */
+.form-check-input::before {
+  background-color: #fff;
+}
+
+
+/*  navbar menu mobile toggler */
+
+.navbar-toggler {
+  border: none;
+}
+
+.navar-toggler-icon {
+  color: var(--brew-nav-color-accent);
+}

@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+
+    <div>
+      <a class="navbar-brand" href="#">Brewery</a>
+      <fa-icon [icon]="faBeerMugEmpty"></fa-icon>
+    </div>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="navar-toggler-icon">
+        <fa-icon [icon]="faBars"></fa-icon>
+      </div>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about">About</a>
+        </li>
+      </ul>
+
+      <div class="form-check form-switch">
+        <input class="form-check-input color-switch-btn" type="checkbox" id="colorSwitch" (click)="toggleMode()" [checked]="isDarkMode">
+        <label class="form-check-label" for="colorSwitch">
+          <span *ngIf="isDarkMode">🌙</span>
+          <!--<span *ngIf="!isDarkMode">🌞</span>-->
+          <span *ngIf="!isDarkMode">🌙</span>
+        </label>
+      </div>
+    </div>
+
+  </div>
+</nav>
