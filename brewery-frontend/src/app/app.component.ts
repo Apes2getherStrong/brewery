@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {NavigationComponent} from './navigation/navigation.component';
+import {ThemeService} from './service/theme.service';
 
 
 @Component({
@@ -12,4 +13,10 @@ import {NavigationComponent} from './navigation/navigation.component';
 })
 export class AppComponent {
   title = 'brewery-frontend';
+
+  constructor(private themeService: ThemeService) {}
+
+  ngOnInit() {
+    this.themeService.loadInitialMode();
+  }
 }

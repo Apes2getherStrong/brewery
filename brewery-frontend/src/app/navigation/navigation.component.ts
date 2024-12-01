@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {CommonModule, NgIf} from '@angular/common';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { faBars, faBeerMugEmpty } from '@fortawesome/free-solid-svg-icons';
+import {ThemeService} from '../service/theme.service';
 
 @Component({
   selector: 'app-navigation',
@@ -19,13 +20,12 @@ export class NavigationComponent {
   faBars = faBars;
   faBeerMugEmpty = faBeerMugEmpty;
 
+  constructor(private themeService: ThemeService) {
+    this.themeService.isDarkMode$.subscribe((mode) => (this.isDarkMode = mode));
+  }
+
   toggleMode() {
     this.isDarkMode = !this.isDarkMode;
-    //TODO save the mode preference in localStorage to persist the theme across sessions
-    if (this.isDarkMode) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
+    this.themeService.toggleMode(this.isDarkMode);
   }
 }
