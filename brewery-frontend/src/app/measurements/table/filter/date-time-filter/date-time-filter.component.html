@@ -1,44 +1,35 @@
-<mat-form-field>
-  <mat-label>Start date</mat-label>
-  <input matInput
-         [matDatepicker]="datepicker"
-         [(ngModel)]="startDate"
-         (ngModelChange)="onDateChanged()">
-  <mat-datepicker #datepicker></mat-datepicker>
-  <mat-datepicker-toggle [for]="datepicker" matSuffix></mat-datepicker-toggle>
-</mat-form-field>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text"> Start date </span>
+  </div>
+  <input type="text" class="form-control" placeholder="2024-12-02" aria-label="start date" [(ngModel)]="startDateStr">
+</div>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text"> Start time </span>
+  </div>
+  <input type="text" class="form-control" placeholder="14:30:00" aria-label="start time" [(ngModel)]="startTimeStr">
+</div>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text"> End date </span>
+  </div>
+  <input type="text" class="form-control" placeholder="2024-11-02" aria-label="end date" [(ngModel)]="endDateStr">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" (click)="setCurrentEndDate()">Set to Current</button>
+  </div>
+</div>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1"> End time </span>
+  </div>
+  <input type="text" class="form-control" placeholder="14:30:00" aria-label="end time" [(ngModel)]="endTimeStr">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" (click)="setCurrentEndTime()">Set to Current</button>
+  </div>
+</div>
 
-<mat-form-field>
-  <mat-label>Start time</mat-label>
-  <input matInput
-         [matTimepicker]="timepicker"
-         [(ngModel)]="startTime"
-         [ngModelOptions]="{updateOn: 'blur'}"
-         (ngModelChange)="onDateChanged()">
-  <mat-timepicker #timepicker></mat-timepicker>
-  <mat-timepicker-toggle [for]="timepicker" matSuffix></mat-timepicker-toggle>
-</mat-form-field>
-
-<mat-form-field>
-  <mat-label>End date</mat-label>
-  <input matInput
-         [matDatepicker]="endDatepicker"
-         [(ngModel)]="endDate"
-         (ngModelChange)="onDateChanged()">
-  <mat-datepicker #endDatepicker></mat-datepicker>
-  <mat-datepicker-toggle [for]="endDatepicker" matSuffix></mat-datepicker-toggle>
-</mat-form-field>
-
-<mat-form-field>
-  <mat-label>End time</mat-label>
-  <input matInput
-         [matTimepicker]="endTimepicker"
-         [(ngModel)]="endTime"
-         [ngModelOptions]="{updateOn: 'blur'}"
-         (ngModelChange)="onDateChanged()">
-  <mat-timepicker #endTimepicker></mat-timepicker>
-  <mat-timepicker-toggle [for]="endTimepicker" matSuffix></mat-timepicker-toggle>
-</mat-form-field>
-
-<p>Start Date and Time: {{startDate | date:'short'}} {{startTime | date:'shortTime'}}</p>
-<p>End Date and Time: {{endDate | date:'short'}} {{endTime | date:'shortTime'}}</p>
+<div class="d-flex justify-content-between">
+  <button class="btn filter-button" (click)="onDateChanged()">Search</button>
+  <button class="btn filter-button" (click)="clearFilters()">Clear</button>
+</div>
