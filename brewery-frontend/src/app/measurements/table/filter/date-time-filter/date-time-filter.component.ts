@@ -1,40 +1,26 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {IFilterAngularComp} from '@ag-grid-community/angular';
-import { IFilterParams, AgPromise, IDoesFilterPassParams, IAfterGuiAttachedParams } from '@ag-grid-community/core';
-import {FormsModule} from '@angular/forms';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
-import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
-import {MatInput} from '@angular/material/input';
-import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
-import {CommonModule} from '@angular/common';
+import { Component } from '@angular/core';
+import { IFilterAngularComp } from '@ag-grid-community/angular';
+import { IFilterParams, AgPromise, IDoesFilterPassParams } from '@ag-grid-community/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-date-time-filter',
   standalone: true,
   imports: [
     FormsModule,
-    MatDatepicker,
-    MatDatepickerInput,
-    MatDatepickerToggle,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    MatSuffix,
-    MatTimepicker,
-    MatTimepickerInput,
-    MatTimepickerToggle,
     CommonModule
   ],
   templateUrl: './date-time-filter.component.html',
-  styleUrl: './date-time-filter.component.css'
+  styleUrls: ['./date-time-filter.component.css']
 })
 export class DateTimeFilterComponent implements IFilterAngularComp {
 
-  // Input date and time
-  startDate: Date | null = null;
-  startTime: Date | null = null;
-  endDate: Date | null = null;
-  endTime: Date | null = null;
+  // Input values for start and end date-time as strings
+  startDateStr: string = "";
+  startTimeStr: string = "";
+  endDateStr: string = "";
+  endTimeStr: string = "";
 
   //params for filter operations
   filterParams!: IFilterParams;
@@ -47,9 +33,10 @@ export class DateTimeFilterComponent implements IFilterAngularComp {
   // 1) the grid will show the filter icon in the column
   // header and 2) the filter will be included in the filtering of the data.
   isFilterActive(): boolean {
-    return this.startDate != null && this.endDate != null && this.startTime != null && this.endTime != null;
+    return this.startDateStr !== "" && this.endDateStr !== "" && this.startTimeStr !== "" && this.endTimeStr !== "";
   }
 
+  // The main filter logic for comparing rows with the date-time range
   doesFilterPass(params: IDoesFilterPassParams): boolean {
     const { node } = params;
     const rowDate: Date | null | undefined = this.filterParams.getValue(node);
@@ -58,32 +45,24 @@ export class DateTimeFilterComponent implements IFilterAngularComp {
       return false; // Ensure the row value is a Date
     }
 
-    // Combine start date/time and end date/time for comparison
-    const startDateTime = this.combineDateTime(this.startDate, this.startTime);
-    const endDateTime = this.combineDateTime(this.endDate, this.endTime);
+    // Combine string date and time into Date objects
+    const startDateTime = this.combineDateTime(this.startDateStr, this.startTimeStr);
+    const endDateTime = this.combineDateTime(this.endDateStr, this.endTimeStr);
 
     // Check if the row's date is within the selected range
     if (startDateTime && endDateTime) {
-      console.log( rowDate)
-      console.log( startDateTime)
-      console.log( endDateTime)
-      console.log(rowDate >= startDateTime && rowDate <= endDateTime)
-
       return rowDate >= startDateTime && rowDate <= endDateTime;
-
     }
 
     return false;
   }
 
-  // Combine date and time into a single Date object
-  combineDateTime(date: Date | null, time: Date | null): Date | null {
-    if (date && time) {
-      const combined = new Date(date);
-      combined.setHours(time.getHours());
-      combined.setMinutes(time.getMinutes());
-      combined.setSeconds(time.getSeconds());
-      return combined;
+  // Combine date and time string into a Date object
+  combineDateTime(dateStr: string, timeStr: string): Date | null {
+    if (dateStr && timeStr) {
+      const combinedDateStr = `${dateStr}T${timeStr}`;
+      const combinedDate = new Date(combinedDateStr);
+      return combinedDate.getTime() ? combinedDate : null;
     }
     return null;
   }
@@ -96,10 +75,10 @@ export class DateTimeFilterComponent implements IFilterAngularComp {
     }
 
     return {
-      startDate: this.startDate,
-      startTime: this.startTime,
-      endDate: this.endDate,
-      endTime: this.endTime
+      startDate: this.startDateStr,
+      startTime: this.startTimeStr,
+      endDate: this.endDateStr,
+      endTime: this.endTimeStr
     };
   }
 
@@ -107,15 +86,15 @@ export class DateTimeFilterComponent implements IFilterAngularComp {
   // The grid will pass undefined/null to clear the filter.
   setModel(model: any): void | AgPromise<void> {
     if (model) {
-      this.startDate = model.startDate ? new Date(model.startDate) : null;
-      this.startTime = model.startTime ? new Date(model.startTime) : null;
-      this.endDate = model.endDate ? new Date(model.endDate) : null;
-      this.endTime = model.endTime ? new Date(model.endTime) : null;
+      this.startDateStr = model.startDate || "";
+      this.startTimeStr = model.startTime || "";
+      this.endDateStr = model.endDate || "";
+      this.endTimeStr = model.endTime || "";
     } else {
-      this.startDate = null;
-      this.startTime = null;
-      this.endDate = null;
-      this.endTime = null;
+      this.startDateStr = "";
+      this.startTimeStr = "";
+      this.endDateStr = "";
+      this.endTimeStr = "";
     }
   }
 
@@ -132,11 +111,29 @@ export class DateTimeFilterComponent implements IFilterAngularComp {
   // value here
   getModelAsString(model: any): string {
     if (model) {
-      const start = model.startDate ? new Date(model.startDate).toLocaleString() : 'N/A';
-      const end = model.endDate ? new Date(model.endDate).toLocaleString() : 'N/A';
+      const start = model.startDate ? `${model.startDate} ${model.startTime}` : 'N/A';
+      const end = model.endDate ? `${model.endDate} ${model.endTime}` : 'N/A';
       return `From: ${start}, To: ${end}`;
     }
     return '';
+  }
+
+  setCurrentEndDate() {
+    const now = new Date();
+    this.endDateStr = now.toISOString().split('T')[0]; // Set to current date (YYYY-MM-DD)
+  }
+
+  setCurrentEndTime() {
+    const now = new Date();
+    this.endTimeStr = now.toTimeString().split(' ')[0]; // Set to current time (HH:mm:ss)
+  }
+
+  clearFilters() {
+    this.startDateStr = "";
+    this.startTimeStr = "";
+    this.endDateStr = "";
+    this.endTimeStr = "";
+    this.filterParams.filterChangedCallback();
   }
 
   /*refresh?(newParams: IFilterParams): boolean {
@@ -157,5 +154,6 @@ export class DateTimeFilterComponent implements IFilterAngularComp {
   afterGuiDetached?(): void {
       throw new Error('Method not implemented.');
   }*/
+
 
 }
