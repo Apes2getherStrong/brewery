@@ -1,1 +1,8 @@
 <p>date-time-filter works!</p>
+<input
+  #eFilterText
+  type="text"
+  [(ngModel)]="filterText"
+  (ngModelChange)="onInputChanged()"
+  placeholder="name that will be searched"
+/>

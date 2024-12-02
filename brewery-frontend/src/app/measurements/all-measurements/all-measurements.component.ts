@@ -14,7 +14,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'; // Required for date functionality
 import {MatTimepickerModule} from '@angular/material/timepicker';
-import { FormsModule } from '@angular/forms'; // Required for [(ngModel)]
+import { FormsModule } from '@angular/forms';
+import {DateTimeFilterComponent} from '../table/filter/date-time-filter/date-time-filter.component'; // Required for [(ngModel)]
 
 
 @Component({
@@ -55,7 +56,7 @@ export class AllMeasurementsComponent implements OnInit {
   }
 
   colDefs: ColDef<SensorData>[] = [
-    { field: 'sensorType', headerName: 'Sensor Type' },
+    { field: 'sensorType', headerName: 'Sensor Type', filter: DateTimeFilterComponent },
     { field: 'sensorNr', headerName: 'Sensor Number' },
     { field: 'value', headerName: 'Value' },
     { field: 'dateTime', headerName: 'Date/Time', valueFormatter: this.formatDate },
