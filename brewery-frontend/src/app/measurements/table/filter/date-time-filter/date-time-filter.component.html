@@ -1,0 +1,44 @@
+<mat-form-field>
+  <mat-label>Start date</mat-label>
+  <input matInput
+         [matDatepicker]="datepicker"
+         [(ngModel)]="startDate"
+         (ngModelChange)="onDateChanged()">
+  <mat-datepicker #datepicker></mat-datepicker>
+  <mat-datepicker-toggle [for]="datepicker" matSuffix></mat-datepicker-toggle>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Start time</mat-label>
+  <input matInput
+         [matTimepicker]="timepicker"
+         [(ngModel)]="startTime"
+         [ngModelOptions]="{updateOn: 'blur'}"
+         (ngModelChange)="onDateChanged()">
+  <mat-timepicker #timepicker></mat-timepicker>
+  <mat-timepicker-toggle [for]="timepicker" matSuffix></mat-timepicker-toggle>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>End date</mat-label>
+  <input matInput
+         [matDatepicker]="endDatepicker"
+         [(ngModel)]="endDate"
+         (ngModelChange)="onDateChanged()">
+  <mat-datepicker #endDatepicker></mat-datepicker>
+  <mat-datepicker-toggle [for]="endDatepicker" matSuffix></mat-datepicker-toggle>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>End time</mat-label>
+  <input matInput
+         [matTimepicker]="endTimepicker"
+         [(ngModel)]="endTime"
+         [ngModelOptions]="{updateOn: 'blur'}"
+         (ngModelChange)="onDateChanged()">
+  <mat-timepicker #endTimepicker></mat-timepicker>
+  <mat-timepicker-toggle [for]="endTimepicker" matSuffix></mat-timepicker-toggle>
+</mat-form-field>
+
+<p>Start Date and Time: {{startDate | date:'short'}} {{startTime | date:'shortTime'}}</p>
+<p>End Date and Time: {{endDate | date:'short'}} {{endTime | date:'shortTime'}}</p>
