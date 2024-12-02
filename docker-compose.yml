@@ -41,6 +41,9 @@ services:
       - mosquitto
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__MongoDB=mongodb://mongo:27017
+      - MqttSettings__Host=mosquitto
+      - MqttSettings__Port=1883
 
 volumes:
   mongo-data:
