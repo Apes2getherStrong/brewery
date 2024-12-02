@@ -1,3 +1,10 @@
+using System;
+using System.Linq;
+using brewery_backend.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<MongoDbService>();
+builder.Services.AddSingleton<MqttService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -15,6 +24,19 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+var mongoDbService = app.Services.GetRequiredService<MongoDbService>();
+if (await mongoDbService.TestConnectionAsync())
+{
+    Console.WriteLine("Połączenie z bazą danych MongoDB zostało nawiązane pomyślnie!");
+}
+else
+{
+    Console.WriteLine("Nie udało się nawiązać połączenia z bazą danych MongoDB.");
+}
+
+var mqttService = app.Services.GetRequiredService<MqttService>();
+await mqttService.StartListeningAsync();
 
 var summaries = new[]
 {
@@ -42,3 +64,4 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+
