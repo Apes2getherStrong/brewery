@@ -9,11 +9,26 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ThemeService } from '../service/theme.service';
 import { SensorData } from '../sensor/model/sensor.model';
 import { SensorService } from '../service/sensor.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core'; // Required for date functionality
+import {MatTimepickerModule} from '@angular/material/timepicker';
+import { FormsModule } from '@angular/forms'; // Required for [(ngModel)]
+
 
 @Component({
   standalone: true,
   selector: 'app-home',
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, AgGridModule],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, AgGridModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTimepickerModule,
+    MatIconModule,
+    MatButtonModule,
+    FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   // encapsulation: ViewEncapsulation.None,
@@ -55,6 +70,7 @@ export class HomeComponent implements OnInit {
   pagination = true;
   paginationPageSize = 500;
   paginationPageSizeSelector = [10, 25, 50];
+  value: any;
 
   formatDate(params: any): string {
     const date = params.value as Date;
