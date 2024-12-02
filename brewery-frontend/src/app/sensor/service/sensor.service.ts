@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {delay, Observable, of} from 'rxjs';
-import {SENSOR_TYPE, SensorData} from '../sensor/model/sensor.model';
+import {SENSOR_TYPE, SensorData} from '../model/sensor.model';
 
 @Injectable({
   providedIn: 'root',

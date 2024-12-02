@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {CommonModule, NgIf} from '@angular/common';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { faBars, faBeerMugEmpty } from '@fortawesome/free-solid-svg-icons';
-import {ThemeService} from '../service/theme.service';
+import {ThemeService} from '../sensor/service/theme.service';
 
 @Component({
   selector: 'app-navigation',

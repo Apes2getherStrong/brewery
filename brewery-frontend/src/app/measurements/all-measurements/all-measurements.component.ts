@@ -6,9 +6,9 @@ import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import '@ag-grid-community/styles/ag-grid.css';
 import '@ag-grid-community/styles/ag-theme-quartz.css';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ThemeService } from '../service/theme.service';
-import { SensorData } from '../sensor/model/sensor.model';
-import { SensorService } from '../service/sensor.service';
+import { ThemeService } from '../../sensor/service/theme.service';
+import { SensorData } from '../../sensor/model/sensor.model';
+import { SensorService } from '../../sensor/service/sensor.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -29,11 +29,11 @@ import { FormsModule } from '@angular/forms'; // Required for [(ngModel)]
     MatIconModule,
     MatButtonModule,
     FormsModule],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  templateUrl: './all-measurements.component.html',
+  styleUrl: './all-measurements.component.css',
   // encapsulation: ViewEncapsulation.None,
 })
-export class HomeComponent implements OnInit {
+export class AllMeasurementsComponent implements OnInit {
   themeClass = 'ag-theme-quartz-dark';
   sensorData: SensorData[] | null = null;
 
