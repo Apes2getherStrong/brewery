@@ -1,8 +1,47 @@
 <p>date-time-filter works!</p>
-<input
-  #eFilterText
-  type="text"
-  [(ngModel)]="filterText"
-  (ngModelChange)="onInputChanged()"
-  placeholder="name that will be searched"
-/>
+
+<mat-form-field>
+  <mat-label>Start date</mat-label>
+  <input matInput
+         [matDatepicker]="datepicker"
+         [(ngModel)]="startDate"
+         (ngModelChange)="onDateChanged()">
+  <mat-datepicker #datepicker/>
+  <mat-datepicker-toggle [for]="datepicker" matSuffix/>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Start time</mat-label>
+  <input matInput
+         [matTimepicker]="timepicker"
+         [(ngModel)]="startDate"
+         [ngModelOptions]="{updateOn: 'blur'}"
+         (ngModelChange)="onDateChanged()"
+  >
+  <mat-timepicker #timepicker/>
+  <mat-timepicker-toggle [for]="timepicker" matSuffix/>
+</mat-form-field>
+
+
+
+
+<mat-form-field>
+  <mat-label>End date</mat-label>
+  <input matInput
+         [matDatepicker]="datepicker"
+         [(ngModel)]="endDate"
+         (ngModelChange)="onDateChanged()">
+  <mat-datepicker #datepicker/>
+  <mat-datepicker-toggle [for]="datepicker" matSuffix/>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>End time</mat-label>
+  <input matInput
+         [matTimepicker]="timepicker"
+         [(ngModel)]="endDate"
+         [ngModelOptions]="{updateOn: 'blur'}"
+         (ngModelChange)="onDateChanged()">
+  <mat-timepicker #timepicker/>
+  <mat-timepicker-toggle [for]="timepicker" matSuffix/>
+</mat-form-field>

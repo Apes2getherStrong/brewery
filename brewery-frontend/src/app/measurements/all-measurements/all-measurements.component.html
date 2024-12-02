@@ -24,19 +24,32 @@
 
 <mat-form-field>
   <mat-label>Meeting date</mat-label>
-  <input matInput [matDatepicker]="datepicker" [(ngModel)]="value">
-  <mat-datepicker #datepicker/>
-  <mat-datepicker-toggle [for]="datepicker" matSuffix/>
+  <input matInput [matDatepicker]="datepicker" [(ngModel)]="meetingDate" [ngModelOptions]="{updateOn: 'blur'}">
+  <mat-datepicker #datepicker></mat-datepicker>
+  <mat-datepicker-toggle [for]="datepicker" matSuffix></mat-datepicker-toggle>
 </mat-form-field>
 
 <mat-form-field>
   <mat-label>Meeting time</mat-label>
-  <input matInput
-         [matTimepicker]="timepicker"
-         [(ngModel)]="value"
-         [ngModelOptions]="{updateOn: 'blur'}">
-  <mat-timepicker #timepicker/>
-  <mat-timepicker-toggle [for]="timepicker" matSuffix/>
+  <input matInput [matTimepicker]="timepicker" [(ngModel)]="meetingTime" [ngModelOptions]="{updateOn: 'blur'}">
+  <mat-timepicker #timepicker></mat-timepicker>
+  <mat-timepicker-toggle [for]="timepicker" matSuffix></mat-timepicker-toggle>
 </mat-form-field>
 
-<p>Value: {{value}}</p>
+<mat-form-field>
+  <mat-label>Second meeting date</mat-label>
+  <input matInput [matDatepicker]="secondDatepicker" [(ngModel)]="secondMeetingDate" [ngModelOptions]="{updateOn: 'blur'}">
+  <mat-datepicker #secondDatepicker></mat-datepicker>
+  <mat-datepicker-toggle [for]="secondDatepicker" matSuffix></mat-datepicker-toggle>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Second meeting time</mat-label>
+  <input matInput [matTimepicker]="secondTimepicker" [(ngModel)]="secondMeetingTime" [ngModelOptions]="{updateOn: 'blur'}">
+  <mat-timepicker #secondTimepicker></mat-timepicker>
+  <mat-timepicker-toggle [for]="secondTimepicker" matSuffix></mat-timepicker-toggle>
+</mat-form-field>
+
+<p>First Meeting: {{meetingDate | date:'short'}} {{meetingTime | date:'shortTime'}}</p>
+<p>Second Meeting: {{secondMeetingDate | date:'short'}} {{secondMeetingTime | date:'shortTime'}}</p>
+

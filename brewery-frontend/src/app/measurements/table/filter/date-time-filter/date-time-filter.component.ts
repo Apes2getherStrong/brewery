@@ -2,12 +2,26 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
 import {IFilterAngularComp} from '@ag-grid-community/angular';
 import { IFilterParams, AgPromise, IDoesFilterPassParams, IAfterGuiAttachedParams } from '@ag-grid-community/core';
 import {FormsModule} from '@angular/forms';
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
+import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
+import {MatInput} from '@angular/material/input';
+import {MatTimepicker, MatTimepickerInput, MatTimepickerToggle} from '@angular/material/timepicker';
 
 @Component({
   selector: 'app-date-time-filter',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatSuffix,
+    MatTimepicker,
+    MatTimepickerInput,
+    MatTimepickerToggle
   ],
   templateUrl: './date-time-filter.component.html',
   styleUrl: './date-time-filter.component.css'
@@ -15,8 +29,8 @@ import {FormsModule} from '@angular/forms';
 export class DateTimeFilterComponent implements IFilterAngularComp {
 
     //input
-    @ViewChild('eFilterText') eFilterText!: ElementRef;
-    filterText = '';
+    startDate: Date | null = null;
+    endDate: Date | null = null;
 
     //params for filter operations
     filterParams!: IFilterParams;
@@ -29,17 +43,22 @@ export class DateTimeFilterComponent implements IFilterAngularComp {
     // 1) the grid will show the filter icon in the column
     // header and 2) the filter will be included in the filtering of the data.
     isFilterActive(): boolean {
-      return this.filterText != null && this.filterText !== '';
+      return this.startDate != null && this.endDate != null;
     }
 
     doesFilterPass(params: IDoesFilterPassParams): boolean {
-      // make sure each word passes separately, ie search for firstname, lastname
       const { node } = params;
+      const rowDate: Date | null | undefined = this.filterParams.getValue(node);
 
-      const value = this.filterParams.getValue(node);
-      if(value.toString() == this.filterText) {
-        return true;
+      if (!rowDate || !(rowDate instanceof Date)) {
+        return false; // Ensure the row value is a Date
       }
+
+      // Check if the row's date is between startDate and endDate
+      if (this.startDate && this.endDate) {
+        return rowDate >= this.startDate && rowDate <= this.endDate;
+      }
+
       return false;
     }
 
@@ -50,17 +69,26 @@ export class DateTimeFilterComponent implements IFilterAngularComp {
         return null;
       }
 
-      return { value: this.filterText };
+      return {
+        startDate: this.startDate,
+        endDate: this.endDate
+      };
     }
 
     // Restores the filter state. Called by the grid after gridApi.setFilterModel(model) is called.
     // The grid will pass undefined/null to clear the filter.
     setModel(model: any): void | AgPromise<void> {
-      this.filterText = model == null ? null : model.value;
+      if (model) {
+        this.startDate = model.startDate ? new Date(model.startDate) : null;
+        this.endDate = model.endDate ? new Date(model.endDate) : null;
+      } else {
+        this.startDate = null;
+        this.endDate = null;
+      }
     }
 
     //TODO understand
-    onInputChanged() {
+    onDateChanged() {
       this.filterParams.filterChangedCallback();
     }
 
@@ -71,7 +99,12 @@ export class DateTimeFilterComponent implements IFilterAngularComp {
     // filter with one string input value, you could just return the simple string
     // value here
     getModelAsString?(model: any): string {
-      return "AFUHRF";
+      if (model) {
+        const start = model.startDate ? new Date(model.startDate).toLocaleDateString() : 'N/A';
+        const end = model.endDate ? new Date(model.endDate).toLocaleDateString() : 'N/A';
+        return `From: ${start}, To: ${end}`;
+      }
+      return '';
     }
 
     /*refresh?(newParams: IFilterParams): boolean {

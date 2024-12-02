@@ -16,7 +16,7 @@ import { MatNativeDateModule } from '@angular/material/core'; // Required for da
 import {MatTimepickerModule} from '@angular/material/timepicker';
 import { FormsModule } from '@angular/forms';
 import {DateTimeFilterComponent} from '../table/filter/date-time-filter/date-time-filter.component'; // Required for [(ngModel)]
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -29,7 +29,8 @@ import {DateTimeFilterComponent} from '../table/filter/date-time-filter/date-tim
     MatTimepickerModule,
     MatIconModule,
     MatButtonModule,
-    FormsModule],
+    FormsModule,
+    CommonModule,],
   templateUrl: './all-measurements.component.html',
   styleUrl: './all-measurements.component.css',
   // encapsulation: ViewEncapsulation.None,
@@ -56,10 +57,10 @@ export class AllMeasurementsComponent implements OnInit {
   }
 
   colDefs: ColDef<SensorData>[] = [
-    { field: 'sensorType', headerName: 'Sensor Type', filter: DateTimeFilterComponent },
+    { field: 'sensorType', headerName: 'Sensor Type' },
     { field: 'sensorNr', headerName: 'Sensor Number' },
     { field: 'value', headerName: 'Value' },
-    { field: 'dateTime', headerName: 'Date/Time', valueFormatter: this.formatDate },
+    { field: 'dateTime', headerName: 'Date/Time', valueFormatter: this.formatDate, filter: DateTimeFilterComponent },
   ];
 
   defaultColDef: ColDef = {
@@ -71,7 +72,11 @@ export class AllMeasurementsComponent implements OnInit {
   pagination = true;
   paginationPageSize = 500;
   paginationPageSizeSelector = [10, 25, 50];
-  value: any;
+
+  meetingDate: Date | null = null;
+  meetingTime: Date | null = null;
+  secondMeetingDate: Date | null = null;
+  secondMeetingTime: Date | null = null;
 
   formatDate(params: any): string {
     const date = params.value as Date;
