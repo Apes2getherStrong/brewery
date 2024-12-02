@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./sensor_queue/mosquitto/conf:/mosquitto/config
+      - ./sensor_queue/mosquitto/data:/mosquitto/data
+      - ./sensor_queue/mosquitto/log:/mosquitto/log
+
+  sensors:
+    build:
+      context: ./sensor_queue
+      dockerfile: Dockerfile
+    container_name: sensors
+    depends_on:
+      - mosquitto
+    env_file:
+      - ./sensor_queue/.env
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build:
+      context: ./brewery-backend/brewery-backend
+      dockerfile: Dockerfile
+    container_name: brewery-backend
+    ports:
+      - "5000:8080"
+    depends_on:
+      - mongo
+      - mosquitto
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+volumes:
+  mongo-data:
