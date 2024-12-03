@@ -1,8 +1,8 @@
 .navbar {
   width: 100%;
   padding: 1rem 2rem;
-  color: var(--brew-nav-color);
-  background-color: var(--brew-nav-backgound-primary);
+  color: var(--brew--background-content);
+  background-color: var(--brew--backgound-header);
 }
 
 .navbar .navbar-brand {
@@ -14,7 +14,7 @@
 .navbar-nav .nav-link {
   font-size: 1rem;
   padding: 0.5rem 1rem;
-  color: var(--brew-nav-color);
+  color: var(--brew--background-content);
 }
 
 .navbar-nav .nav-link.active {

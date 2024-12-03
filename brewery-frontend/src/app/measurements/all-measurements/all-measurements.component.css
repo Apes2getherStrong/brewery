@@ -1,3 +1,34 @@
 @import '../../../../node_modules/ag-grid-community/styles/ag-grid.css';
 @import '../../../../node_modules/ag-grid-community/styles/ag-theme-alpine.css';
 @import '../../../../node_modules/ag-grid-community/styles/ag-theme-quartz.css';
+
+.card-header {
+  background-color: var(--brew--backgound-header);
+}
+
+.card-body {
+  background-color: var(--brew-background-primary);
+  color: var(--brew-color-primary);
+}
+
+.card {
+  border: none;
+}
+
+.btn-secondary {
+  background-color: var(--brew-background-primary);
+  color: var(--brew-color-primary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--brew-nav-color-accent);
+  color: #000000;
+}
+
+input {
+  color-scheme: var(--date-color-sheme);
+}
+button {
+  background-color: var(--brew-background-primary);
+  color: var(--brew-color-primary);
+}

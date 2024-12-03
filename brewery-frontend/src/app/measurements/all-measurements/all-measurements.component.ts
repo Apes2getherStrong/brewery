@@ -76,6 +76,7 @@ export class AllMeasurementsComponent implements OnInit {
   meetingTime: Date | null = null;
   secondMeetingDate: Date | null = null;
   secondMeetingTime: Date | null = null;
+  selectedDate: any;
 
   formatDate(params: any): string {
     const date = params.value as Date;

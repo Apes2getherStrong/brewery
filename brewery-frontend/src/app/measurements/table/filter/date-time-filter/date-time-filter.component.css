@@ -2,9 +2,9 @@
 .form-control,
 .filter-button,
 .btn-outline-secondary {
-  background-color: var(--brew-nav-backgound-primary);
-  color: var(--brew-nav-color);
-  border: 1px solid var(--brew-nav-backgound-primary);
+  background-color: var(--brew--backgound-header);
+  color: var(--brew--background-content);
+  border: 1px solid var(--brew--backgound-header);
 }
 
 .form-control {

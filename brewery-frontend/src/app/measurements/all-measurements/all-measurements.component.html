@@ -1,55 +1,80 @@
-<div class="d-flex flex-column align-items-center" style="height: 80vh;">
-  <div class="mb-3">
-    <button mat-raised-button color="primary" (click)="onExportCsv()">
-      Export to CSV
-    </button>
-    <button mat-raised-button color="accent" (click)="onShowCsv()">
-      Show CSV Data
-    </button>
-  </div>
-  <div style="height: 80%; width: 80%">
-    <ag-grid-angular
-      style="width: 100%; height: 100%;"
-      [class]="themeClass"
-      [rowData]="sensorData"
-      [columnDefs]="colDefs"
-      [defaultColDef]="defaultColDef"
-      [pagination]="pagination"
-      [paginationPageSize]="paginationPageSize"
-      [paginationPageSizeSelector]="paginationPageSizeSelector"
-      (gridReady)="onGridReady($event)"
-    ></ag-grid-angular>
+<div class="row w-100 d-flex flex-column align-items-center mt-4">
+  <div class="col-md-10 " >
+
+    <div class="row w-100 justify-content-around">
+      <div class="col">
+
+        <input type="text" value="Start time" readonly>
+        <input
+          type="date"
+          id="startDate"
+          name="trip-start"
+          value="2018-07-22"
+          min="2018-01-01"
+          max="2018-12-31"
+        />
+        <input type="time" id="startTime" name="appt" required />
+
+        <!--<div class="mb-1"></div>-->
+
+        <input class="ms-3" type="text" value="End time" readonly>
+        <input
+          type="date"
+          id="endDate"
+          name="trip-start"
+          value="2018-07-22"
+          min="2018-01-01"
+          max="2018-12-31"
+        />
+        <input type="time" id="endTime" name="appt" required />
+
+        <button class="ms-3">Get Data</button>
+      </div>
+    </div>
+
+    <div style="height: 75vh;">
+      <ag-grid-angular
+        style="width: 100%; height: 100%;"
+        [class]="themeClass"
+        [rowData]="sensorData"
+        [columnDefs]="colDefs"
+        [defaultColDef]="defaultColDef"
+        [pagination]="pagination"
+        [paginationPageSize]="paginationPageSize"
+        [paginationPageSizeSelector]="paginationPageSizeSelector"
+        (gridReady)="onGridReady($event)"
+      ></ag-grid-angular>
+    </div>
+
+    <div class="row g-3 mt-4 w-100 justify-content-around mb-5">
+
+      <div class="col-md-5">
+        <div class="card h-100" style="margin-bottom: 55px">
+          <div class="card-header">
+            <button class="btn btn-secondary " (click)="onExportCsv()">Show JSON Data</button>
+          </div>
+          <div class="card-body" style="height: 50vh">
+            <pre id="jsonOutput" style="white-space: pre-wrap;">JSON data will be displayed here.</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="card h-100" >
+          <div class="card-header">
+            <button class="btn btn-secondary" (click)="onShowCsv()">Show CSV Data</button>
+          </div>
+          <div class="card-body" style="height: 50vh">
+            <pre id="csvOutput" style="white-space: pre-wrap;">CSV data will be displayed here.</pre>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </div>
 
-<mat-form-field>
-  <mat-label>Meeting date</mat-label>
-  <input matInput [matDatepicker]="datepicker" [(ngModel)]="meetingDate" [ngModelOptions]="{updateOn: 'blur'}">
-  <mat-datepicker #datepicker></mat-datepicker>
-  <mat-datepicker-toggle [for]="datepicker" matSuffix></mat-datepicker-toggle>
-</mat-form-field>
 
-<mat-form-field>
-  <mat-label>Meeting time</mat-label>
-  <input matInput [matTimepicker]="timepicker" [(ngModel)]="meetingTime" [ngModelOptions]="{updateOn: 'blur'}">
-  <mat-timepicker #timepicker></mat-timepicker>
-  <mat-timepicker-toggle [for]="timepicker" matSuffix></mat-timepicker-toggle>
-</mat-form-field>
 
-<mat-form-field>
-  <mat-label>Second meeting date</mat-label>
-  <input matInput [matDatepicker]="secondDatepicker" [(ngModel)]="secondMeetingDate" [ngModelOptions]="{updateOn: 'blur'}">
-  <mat-datepicker #secondDatepicker></mat-datepicker>
-  <mat-datepicker-toggle [for]="secondDatepicker" matSuffix></mat-datepicker-toggle>
-</mat-form-field>
-
-<mat-form-field>
-  <mat-label>Second meeting time</mat-label>
-  <input matInput [matTimepicker]="secondTimepicker" [(ngModel)]="secondMeetingTime" [ngModelOptions]="{updateOn: 'blur'}">
-  <mat-timepicker #secondTimepicker></mat-timepicker>
-  <mat-timepicker-toggle [for]="secondTimepicker" matSuffix></mat-timepicker-toggle>
-</mat-form-field>
-
-<p>First Meeting: {{meetingDate | date:'short'}} {{meetingTime | date:'shortTime'}}</p>
-<p>Second Meeting: {{secondMeetingDate | date:'short'}} {{secondMeetingTime | date:'shortTime'}}</p>
 

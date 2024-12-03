@@ -1,18 +1,20 @@
 .body {
   height: 100%;
   margin: 0;
-  background-color: var(--brew-background-primary) ;
+  background-color: var(--brew-background-body) ;
   color: var(--brew-color-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 :root {
-  --brew-nav-backgound-primary: #344e41;
-  --brew-nav-color: #a3b18a;
+  --brew--backgound-header: #344e41;
+  --brew--background-content: #a3b18a;
   --brew-nav-color-accent: #fdc500;
 
-  --brew-background-primary: #dad7cd;
+  --brew-background-body: #dad7cd;
   --brew-background-secondary: #588157;
+  --brew-background-primary: #fff;
+
 
   --brew-color-primary: #000;
   --brew-color-secondary: #a3b18a;
@@ -21,20 +23,24 @@
 
   --bs-font-sans-serif: 'Arial', sans-serif;
   --bs-border-radius: 0.5rem;
+
+  --date-color-sheme: light;
 }
 
 [data-theme="dark"] {
-  --brew-nav-backgound-primary: #1b263b;
-  --brew-nav-color: #fff;
+  --brew--backgound-header: #1b263b;
+  --brew--background-content: #fff;
   --brew-nav-color-accent: #fdc500;
 
-  --brew-background-primary: #000;
-  --brew-background-secondary: #000;
+  --brew-background-body: #000;
+  --brew-background-secondary: #202c34;
+  --brew-background-primary: #202c34;
 
   --brew-color-primary: #fff;
   --brew-color-secondary: #fff;
 
   --brew-outline: #212529;
+  --date-color-sheme: dark;
 }
 
 
