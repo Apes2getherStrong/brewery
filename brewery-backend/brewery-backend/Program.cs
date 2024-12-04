@@ -26,14 +26,22 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 var mongoDbService = app.Services.GetRequiredService<MongoDbService>();
+
 if (await mongoDbService.TestConnectionAsync())
 {
     Console.WriteLine("Połączenie z bazą danych MongoDB zostało nawiązane pomyślnie!");
+    
+    var sensorData = await mongoDbService.GetAllSensorDataAsync();
+    foreach (var data in sensorData)
+    {
+        Console.WriteLine($"Topic: {data.Topic}, Value: {data.Value}, Timestamp: {data.Timestamp}");
+    }
 }
 else
 {
     Console.WriteLine("Nie udało się nawiązać połączenia z bazą danych MongoDB.");
 }
+
 
 var mqttService = app.Services.GetRequiredService<MqttService>();
 await mqttService.StartListeningAsync();
