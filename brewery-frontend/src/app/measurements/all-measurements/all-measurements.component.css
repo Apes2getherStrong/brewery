@@ -20,6 +20,7 @@
   color: var(--brew-color-primary);
 }
 
+.find-button,
 .btn-secondary:hover {
   background-color: var(--brew-nav-color-accent);
   color: #000000;

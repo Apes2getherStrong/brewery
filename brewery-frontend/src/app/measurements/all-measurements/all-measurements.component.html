@@ -8,27 +8,31 @@
         <input
           type="date"
           id="startDate"
+          [(ngModel)]="startDate"
           name="trip-start"
-          value="2018-07-22"
+          value="2024-12-13"
           min="2018-01-01"
-          max="2018-12-31"
+          max="2025-12-31"
         />
-        <input type="time" id="startTime" name="appt" required />
+        <input type="time" id="startTime" [(ngModel)]="startTime" name="appt" required />
+        <button (click)="setStartDateTimeToNow()">Set to now</button>
 
         <!--<div class="mb-1"></div>-->
 
-        <input class="ms-3" type="text" value="End time" readonly>
+        <input class="ms-5" type="text" value="End time" readonly>
         <input
           type="date"
           id="endDate"
+          [(ngModel)]="endDate"
           name="trip-start"
           value="2018-07-22"
           min="2018-01-01"
-          max="2018-12-31"
+          max="2025-12-31"
         />
-        <input type="time" id="endTime" name="appt" required />
+        <input type="time" id="endTime"  [(ngModel)]="endTime" name="appt" required />
+        <button (click)="setEndDateTimeToNow()">Set to now</button>
 
-        <button class="ms-3">Get Data</button>
+        <button class="ms-3 find-button" (click)="getDataFromDataRange()">Get Data</button>
       </div>
     </div>
 
@@ -49,7 +53,7 @@
     <div class="row g-3 mt-4 w-100 justify-content-around mb-5">
 
       <div class="col-md-5">
-        <div class="card h-100" style="margin-bottom: 55px">
+        <div class="card h-100">
           <div class="card-header">
             <button class="btn btn-secondary " (click)="onExportCsv()">Show JSON Data</button>
           </div>

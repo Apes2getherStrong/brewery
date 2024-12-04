@@ -12,11 +12,12 @@ import { SensorService } from '../../sensor/service/sensor.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core'; // Required for date functionality
+import { MatNativeDateModule } from '@angular/material/core';
 import {MatTimepickerModule} from '@angular/material/timepicker';
 import { FormsModule } from '@angular/forms';
-import {DateTimeFilterComponent} from '../table/filter/date-time-filter/date-time-filter.component'; // Required for [(ngModel)]
+import {DateTimeFilterComponent} from '../table/filter/date-time-filter/date-time-filter.component';
 import { CommonModule } from '@angular/common';
+import {StringDateTimeConverterService} from '../table/converter/string-date-time-converter.service';
 
 @Component({
   standalone: true,
@@ -35,25 +36,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './all-measurements.component.css',
 })
 export class AllMeasurementsComponent implements OnInit {
+
   themeClass = 'ag-theme-quartz-dark';
+
   sensorData: SensorData[] | null = null;
 
   private gridApi!: GridApi;
-
-  //https://www.ag-grid.com/javascript-data-grid/grid-size/#autoHeight
-  //https://www.ag-grid.com/angular-data-grid/getting-started/
-
-  constructor(private sensorService: SensorService, private themeService: ThemeService) {}
-
-  ngOnInit(): void {
-    this.themeService.isDarkMode$.subscribe((isDarkMode) => {
-      this.themeClass = isDarkMode ? 'ag-theme-quartz-dark' : 'ag-theme-alpine';
-    });
-
-    this.sensorService.getSensorData().subscribe((data) => {
-      this.sensorData = data;
-    });
-  }
 
   colDefs: ColDef<SensorData>[] = [
     { field: 'sensorType', headerName: 'Sensor Type' },
@@ -72,11 +60,24 @@ export class AllMeasurementsComponent implements OnInit {
   paginationPageSize = 500;
   paginationPageSizeSelector = [10, 25, 50];
 
-  meetingDate: Date | null = null;
-  meetingTime: Date | null = null;
-  secondMeetingDate: Date | null = null;
-  secondMeetingTime: Date | null = null;
-  selectedDate: any;
+
+  startDate: any;
+  startTime: any;
+  endDate: any;
+  endTime: any;
+
+  constructor(private sensorService: SensorService, private themeService: ThemeService, private stringDateTimeConvertorService: StringDateTimeConverterService) {}
+
+  ngOnInit(): void {
+    this.themeService.isDarkMode$.subscribe((isDarkMode) => {
+      this.themeClass = isDarkMode ? 'ag-theme-quartz-dark' : 'ag-theme-alpine';
+    });
+
+    this.sensorService.getSensorData().subscribe((data) => {
+      this.sensorData = data;
+    });
+
+  }
 
   formatDate(params: any): string {
     const date = params.value as Date;
@@ -92,7 +93,19 @@ export class AllMeasurementsComponent implements OnInit {
   }
 
 
+  getDataFromDataRange() {
 
+    const startDayTime = this.stringDateTimeConvertorService.getDateTimeFromStringDateAndStringTime(this.startDate, this.startTime);
+    const endDayTime = this.stringDateTimeConvertorService.getDateTimeFromStringDateAndStringTime(this.endDate, this.endTime);
+
+    if(endDayTime > startDayTime) {
+      console.log("start date: " +  this.startDate)
+      console.log("start time: " +  this.startTime)
+      console.log("end date: " +  this.endDate)
+      console.log("end time: " +  this.endTime)
+    }
+
+  }
 
   onShowCsv(): void {
     // Retrieve CSV data as a string
@@ -125,4 +138,14 @@ export class AllMeasurementsComponent implements OnInit {
     });
   }
 
+
+  setStartDateTimeToNow() {
+    this.startDate = this.stringDateTimeConvertorService.getStringDateFromDateTimeKebab(new Date());
+    this.startTime = this.stringDateTimeConvertorService.getStringTimeFromDateTimeColon(new Date());
+  }
+
+  setEndDateTimeToNow() {
+    this.endDate = this.stringDateTimeConvertorService.getStringDateFromDateTimeKebab(new Date());
+    this.endTime = this.stringDateTimeConvertorService.getStringTimeFromDateTimeColon(new Date());
+  }
 }
