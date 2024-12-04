@@ -32,7 +32,7 @@
         <input type="time" id="endTime"  [(ngModel)]="endTime" name="appt" required />
         <button (click)="setEndDateTimeToNow()">Set to now</button>
 
-        <button class="ms-3 find-button" (click)="getDataFromDataRange()">Get Data</button>
+        <button class="btn btn-outline-secondary ms-3 mb-2 find-button" (click)="getDataFromDataRange()">Get Data</button>
       </div>
     </div>
 
@@ -55,10 +55,11 @@
       <div class="col-md-5">
         <div class="card h-100">
           <div class="card-header">
-            <button class="btn btn-secondary " (click)="onExportCsv()">Show JSON Data</button>
+            <button class="btn btn-secondary " (click)="onShowJson()">Show JSON Data</button>
+            <button class="btn btn-secondary" (click)="onDownloadJson()"><fa-icon [icon]="faDownload" class="navbar-brand"></fa-icon></button>
           </div>
-          <div class="card-body" style="height: 50vh">
-            <pre id="jsonOutput" style="white-space: pre-wrap;">JSON data will be displayed here.</pre>
+          <div class="card-body" style="height: 50vh; overflow: auto">
+            <pre id="jsonOutput" style="white-space: pre-wrap;" *ngIf="jsonData !== null">{{ jsonData | json }}</pre>
           </div>
         </div>
       </div>
@@ -67,9 +68,10 @@
         <div class="card h-100" >
           <div class="card-header">
             <button class="btn btn-secondary" (click)="onShowCsv()">Show CSV Data</button>
+            <button class="btn btn-secondary" (click)="onDownloadCsv()"><fa-icon [icon]="faDownload" class="navbar-brand"></fa-icon></button>
           </div>
-          <div class="card-body" style="height: 50vh">
-            <pre id="csvOutput" style="white-space: pre-wrap;">CSV data will be displayed here.</pre>
+          <div class="card-body" style="height: 50vh; overflow: auto">
+            <pre id="csvOutput" style="white-space: pre-wrap;">{{ csvData }}</pre>
           </div>
         </div>
       </div>

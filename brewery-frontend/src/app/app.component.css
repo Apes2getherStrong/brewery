@@ -1,0 +1,22 @@
+/* Container for the background */
+.background-container {
+  position: fixed; /* Fixed to the screen */
+  top: 0;
+  left: 0;
+  width: 100%;  /* Full width */
+  height: 100vh; /* Full height */
+  z-index: -1;   /* Place it behind other content */
+  overflow: hidden; /* Hide overflow */
+}
+
+/* Style for the player */
+.background-player {
+  z-index: -1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the animation */
+  width: 100%;  /* Ensure the width fills the container */
+  min-height: 100%; /* Ensure the height fills the container */
+  object-fit: cover; /* Ensure the animation covers the container without distortion */
+}

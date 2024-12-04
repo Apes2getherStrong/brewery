@@ -18,6 +18,9 @@ import { FormsModule } from '@angular/forms';
 import {DateTimeFilterComponent} from '../table/filter/date-time-filter/date-time-filter.component';
 import { CommonModule } from '@angular/common';
 import {StringDateTimeConverterService} from '../table/converter/string-date-time-converter.service';
+import {faBeerMugEmpty, faDownload} from '@fortawesome/free-solid-svg-icons';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {CsvToJsonConverterService} from '../table/converter/csv-to-json-converter.service';
 
 @Component({
   standalone: true,
@@ -31,11 +34,13 @@ import {StringDateTimeConverterService} from '../table/converter/string-date-tim
     MatIconModule,
     MatButtonModule,
     FormsModule,
-    CommonModule,],
+    CommonModule, FaIconComponent,],
   templateUrl: './all-measurements.component.html',
   styleUrl: './all-measurements.component.css',
 })
 export class AllMeasurementsComponent implements OnInit {
+
+  protected readonly faDownload = faDownload;
 
   themeClass = 'ag-theme-quartz-dark';
 
@@ -61,12 +66,15 @@ export class AllMeasurementsComponent implements OnInit {
   paginationPageSizeSelector = [10, 25, 50];
 
 
-  startDate: any;
-  startTime: any;
-  endDate: any;
-  endTime: any;
+  startDate: String = "";
+  startTime: String = "";
+  endDate: String = "";
+  endTime: String = "";
 
-  constructor(private sensorService: SensorService, private themeService: ThemeService, private stringDateTimeConvertorService: StringDateTimeConverterService) {}
+  jsonData: Record<string, string>[]| undefined | null = null;
+  csvData: String = "";
+
+  constructor(private sensorService: SensorService, private themeService: ThemeService, private stringDateTimeConvertorService: StringDateTimeConverterService, private csvToJsonConverterService: CsvToJsonConverterService) {}
 
   ngOnInit(): void {
     this.themeService.isDarkMode$.subscribe((isDarkMode) => {
@@ -88,11 +96,6 @@ export class AllMeasurementsComponent implements OnInit {
     this.gridApi = params.api;
   }
 
-  onExportCsv(): void {
-    this.gridApi.exportDataAsCsv(); // Exports the data as a CSV file
-  }
-
-
   getDataFromDataRange() {
 
     const startDayTime = this.stringDateTimeConvertorService.getDateTimeFromStringDateAndStringTime(this.startDate, this.startTime);
@@ -103,40 +106,14 @@ export class AllMeasurementsComponent implements OnInit {
       console.log("start time: " +  this.startTime)
       console.log("end date: " +  this.endDate)
       console.log("end time: " +  this.endTime)
+
+      this.jsonData = null;
+      this.csvData = "";
     }
 
   }
 
-  onShowCsv(): void {
-    // Retrieve CSV data as a string
-    const csvData = this.gridApi.getDataAsCsv();
 
-    if (!csvData) {
-      console.error('No data available for export.');
-      return;
-    }
-
-    // Log or process the CSV data
-    console.log('CSV Data:', csvData);
-
-    // Example: Converting CSV to JSON
-    const jsonData = this.csvToJson(csvData);
-    console.log('Converted JSON Data:', jsonData);
-  }
-
-  csvToJson(csvData: string): any[] {
-    const lines = csvData.split('\n'); // Split CSV into lines
-    const headers = lines[0].split(','); // Extract headers
-
-    // Convert each line into a JSON object
-    return lines.slice(1).filter(line => line.trim()).map((line) => {
-      const values = line.split(',');
-      return headers.reduce((acc, header, index) => {
-        acc[header.trim()] = values[index]?.trim();
-        return acc;
-      }, {} as Record<string, string>);
-    });
-  }
 
 
   setStartDateTimeToNow() {
@@ -148,4 +125,59 @@ export class AllMeasurementsComponent implements OnInit {
     this.endDate = this.stringDateTimeConvertorService.getStringDateFromDateTimeKebab(new Date());
     this.endTime = this.stringDateTimeConvertorService.getStringTimeFromDateTimeColon(new Date());
   }
+
+
+  onShowCsv(): void {
+    const csvData = this.gridApi.getDataAsCsv();
+    if (!csvData) {
+      console.error('No data available for export.');
+      return;
+    }
+
+    console.log('CSV Data:', csvData);
+    this.csvData = csvData
+
+  }
+
+  onDownloadCsv() {
+    this.gridApi.exportDataAsCsv();
+  }
+
+  onDownloadJson(): void {
+    if (!this.jsonData) {
+      console.error('No JSON data available for download.');
+      return;
+    }
+
+    const jsonStr = JSON.stringify(this.jsonData, null, 2);
+
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+
+    const link = document.createElement('a');
+
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+
+    link.download = 'output.json';
+
+    link.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+
+
+
+  onShowJson(): void {
+    const csvData = this.gridApi.getDataAsCsv();
+    if (!csvData) {
+      console.error('No data available for export.');
+      return;
+    }
+
+    this.jsonData = this.csvToJsonConverterService.convertCsvToJson(csvData);
+    console.log(this.jsonData)
+  }
+
+
 }
