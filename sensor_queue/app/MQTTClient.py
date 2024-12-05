@@ -18,3 +18,9 @@ class MQTTClient:
 
     def loop(self):
         self.client.loop_start()
+        
+    def stop(self):
+        self.client.loop_stop()
+        
+    def disconnect(self):
+        self.client.disconnect()
