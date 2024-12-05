@@ -97,9 +97,6 @@ export class AllMeasurementsComponent implements OnInit {
       this.sensorData = data;
       this.sensorChartService.setSensorData(data);
     });
-
-
-
   }
 
   formatDate(params: any): string {
@@ -109,6 +106,8 @@ export class AllMeasurementsComponent implements OnInit {
 
   onGridReady(params: GridReadyEvent): void {
     this.gridApi = params.api;
+    this.onShowJson();
+    this.onShowCsv();
   }
 
   getDataFromDataRange() {
@@ -125,7 +124,6 @@ export class AllMeasurementsComponent implements OnInit {
       this.jsonData = null;
       this.csvData = "";
     }
-
   }
 
 
@@ -192,6 +190,8 @@ export class AllMeasurementsComponent implements OnInit {
 
   onFilterChanged() {
     this.updateChart();
+    this.onShowJson();
+    this.onShowCsv();
   }
 
   private updateChart(): void {
@@ -200,4 +200,13 @@ export class AllMeasurementsComponent implements OnInit {
     this.sensorChartService.setSensorData(displayedData);
   }
 
+  onSortChanged() {
+    this.onShowJson();
+    this.onShowCsv();
+  }
+
+  onFirstDataRendered() {
+    this.onShowJson();
+    this.onShowCsv();
+  }
 }
