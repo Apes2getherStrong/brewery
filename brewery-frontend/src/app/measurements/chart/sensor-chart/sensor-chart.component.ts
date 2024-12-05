@@ -17,22 +17,99 @@ export class SensorChartComponent implements OnInit {
 
   sensorData: SensorData[] | null = null;
 
+  public maleHeightWeight = [
+    {
+      height: 174,
+      weight: 65.6,
+      age: 21,
+    },
+    {
+      height: 175.3,
+      weight: 71.8,
+      age: 23,
+    },
+    {
+      height: 193.5,
+      weight: 80.7,
+      age: 28,
+    },
+  ]
+
+  public femaleHeightWeight = [
+    {
+      height: 161.2,
+      weight: 51.6,
+      age: 22,
+    },
+    {
+      height: 167.5,
+      weight: 59,
+      age: 20,
+    },
+    {
+      height: 159.5,
+      weight: 49.2,
+      age: 19,
+    },
+  ]
+
+
+
   public chartOptions: AgChartOptions = {
-    // Data: Data to be displayed in the chart
 
-
-    //https://www.ag-grid.com/charts/angular/scatter-series/
     theme: 'ag-vivid-dark',
-    data: [
-      {month: 'Jan', avgTemp: 2.3, iceCreamSales: 162000},
-      {month: 'Mar', avgTemp: 6.3, iceCreamSales: 302000},
-      {month: 'May', avgTemp: 16.2, iceCreamSales: 800000},
-      {month: 'Jul', avgTemp: 22.8, iceCreamSales: 1254000},
-      {month: 'Sep', avgTemp: 14.5, iceCreamSales: 950000},
-      {month: 'Nov', avgTemp: 8.9, iceCreamSales: 200000},
+    title: {
+      text: "Weight vs Height",
+    },
+    subtitle: {
+      text: "by gender",
+    },
+    series: [
+      {
+        type: "scatter",
+        title: "Male",
+        data: this.maleHeightWeight,
+        xKey: "height",
+        xName: "Height",
+        yKey: "weight",
+        yName: "Weight",
+      },
+      {
+        type: "scatter",
+        title: "Female",
+        data: this.femaleHeightWeight,
+        xKey: "height",
+        xName: "Height",
+        yKey: "weight",
+        yName: "Weight",
+      },
     ],
-    // Series: Defines which chart type and data to use
-    series: [{type: 'bar', xKey: 'month', yKey: 'iceCreamSales'}]
+    axes: [
+      {
+        type: "number",
+        position: "bottom",
+        title: {
+          text: "Height",
+        },
+        label: {
+          formatter: (params) => {
+            return params.value + "cm";
+          },
+        },
+      },
+      {
+        type: "number",
+        position: "left",
+        title: {
+          text: "Weight",
+        },
+        label: {
+          formatter: (params) => {
+            return params.value + "kg";
+          },
+        },
+      },
+    ],
   };
 
   constructor(private sensorChartService: SensorChartService) {}
