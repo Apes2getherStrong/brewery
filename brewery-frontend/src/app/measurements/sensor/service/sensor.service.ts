@@ -20,7 +20,7 @@ export class SensorService {
         dateTime: new Date('2022-12-01T08:00:00'),
       },
       {
-        sensorType: SENSOR_TYPE.HUMIDITY,
+        sensorType: SENSOR_TYPE.PH,
         sensorNr: 2,
         value: 60.2,
         dateTime: new Date('2023-12-01T08:00:00'),
