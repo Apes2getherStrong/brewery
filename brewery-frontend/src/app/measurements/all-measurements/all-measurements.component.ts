@@ -145,7 +145,6 @@ export class AllMeasurementsComponent implements OnInit {
       return;
     }
 
-    console.log('CSV Data:', csvData);
     this.csvData = csvData
 
   }
@@ -185,7 +184,6 @@ export class AllMeasurementsComponent implements OnInit {
     }
 
     this.jsonData = this.csvToJsonConverterService.convertCsvToJson(csvData);
-    console.log(this.jsonData)
   }
 
   onFilterChanged() {
