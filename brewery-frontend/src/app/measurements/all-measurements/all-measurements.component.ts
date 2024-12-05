@@ -21,7 +21,6 @@ import {StringDateTimeConverterService} from '../table/converter/string-date-tim
 import {faDownload} from '@fortawesome/free-solid-svg-icons';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {CsvToJsonConverterService} from '../table/converter/csv-to-json-converter.service';
-import {AgCharts} from 'ag-charts-angular';
 import {SensorChartService} from '../chart/service/sensor-chart-service.service';
 import {SensorChartComponent} from '../chart/sensor-chart/sensor-chart.component';
 
@@ -37,7 +36,7 @@ import {SensorChartComponent} from '../chart/sensor-chart/sensor-chart.component
     MatIconModule,
     MatButtonModule,
     FormsModule,
-    CommonModule, FaIconComponent, AgCharts, SensorChartComponent,],
+    CommonModule, FaIconComponent, SensorChartComponent,],
   templateUrl: './all-measurements.component.html',
   styleUrl: './all-measurements.component.css',
 })

@@ -1,123 +1,126 @@
-import {Component, OnInit} from '@angular/core';
-import {SensorChartService} from '../service/sensor-chart-service.service';
-import {SensorData} from '../../sensor/model/sensor.model';
-import {AgCharts} from 'ag-charts-angular';
-import {AgChartOptions} from 'ag-charts-community';
+import { Component, OnInit } from '@angular/core';
+import { SensorChartService } from '../service/sensor-chart-service.service';
+import {SENSOR_TYPE, SensorData} from '../../sensor/model/sensor.model';
+import { AgCharts } from 'ag-charts-angular';
+import { AgChartOptions } from 'ag-charts-community';
+import {ThemeService} from '../../../service/theme.service';
 
 @Component({
   selector: 'app-sensor-chart',
   standalone: true,
-  imports: [
-    AgCharts
-  ],
+  imports: [AgCharts],
   templateUrl: './sensor-chart.component.html',
-  styleUrl: './sensor-chart.component.css'
+  styleUrls: ['./sensor-chart.component.css'],
 })
 export class SensorChartComponent implements OnInit {
+  //https://www.ag-grid.com/charts/angular/scatter-series/
 
   sensorData: SensorData[] | null = null;
 
-  public maleHeightWeight = [
-    {
-      height: 174,
-      weight: 65.6,
-      age: 21,
-    },
-    {
-      height: 175.3,
-      weight: 71.8,
-      age: 23,
-    },
-    {
-      height: 193.5,
-      weight: 80.7,
-      age: 28,
-    },
-  ]
+  public chartOptions: AgChartOptions;
 
-  public femaleHeightWeight = [
-    {
-      height: 161.2,
-      weight: 51.6,
-      age: 22,
-    },
-    {
-      height: 167.5,
-      weight: 59,
-      age: 20,
-    },
-    {
-      height: 159.5,
-      weight: 49.2,
-      age: 19,
-    },
-  ]
+  constructor(private sensorChartService: SensorChartService,  private themeService: ThemeService) {
+    this.chartOptions =  this.initChartOptions()
+  }
 
-
-
-  public chartOptions: AgChartOptions = {
-
-    theme: 'ag-vivid-dark',
-    title: {
-      text: "Weight vs Height",
-    },
-    subtitle: {
-      text: "by gender",
-    },
-    series: [
-      {
-        type: "scatter",
-        title: "Male",
-        data: this.maleHeightWeight,
-        xKey: "height",
-        xName: "Height",
-        yKey: "weight",
-        yName: "Weight",
+  private initChartOptions(): AgChartOptions {
+    return  {
+      theme: 'ag-vivid-dark',
+      title: {
+        text: 'Sensor Data Visualization',
       },
-      {
-        type: "scatter",
-        title: "Female",
-        data: this.femaleHeightWeight,
-        xKey: "height",
-        xName: "Height",
-        yKey: "weight",
-        yName: "Weight",
-      },
-    ],
-    axes: [
-      {
-        type: "number",
-        position: "bottom",
-        title: {
-          text: "Height",
-        },
-        label: {
-          formatter: (params) => {
-            return params.value + "cm";
+      series: [],
+      axes: [
+        {
+          type: 'time',
+          position: 'bottom',
+          title: {
+            text: 'Date & Time',
           },
         },
-      },
-      {
-        type: "number",
-        position: "left",
-        title: {
-          text: "Weight",
-        },
-        label: {
-          formatter: (params) => {
-            return params.value + "kg";
+        {
+          type: 'number',
+          position: 'left',
+          title: {
+            text: 'Sensor Value',
           },
         },
+      ],
+      legend: {
+        position: 'bottom',
       },
-    ],
-  };
+    };
+  }
 
-  constructor(private sensorChartService: SensorChartService) {}
+  private switchTheme(switchToDark: boolean): void {
+    const options = structuredClone(this.chartOptions);
+    options.theme = switchToDark ? 'ag-vivid-dark' : 'ag-vivid';
+    this.chartOptions = options;
+  }
 
   ngOnInit(): void {
-    this.sensorChartService.sensorData$.subscribe((data) => {
-      this.sensorData = data;
 
+    this.themeService.isDarkMode$.subscribe((isDarkMode) => {
+        this.switchTheme(isDarkMode);
     });
+
+    this.sensorChartService.sensorData$.subscribe((data) => {
+      if (data) {
+        this.sensorData = data;
+        console.log(data)
+        this.updateChart(data);
+      }
+    });
+  }
+
+  private updateChart(data: SensorData[]): void {
+
+    const options = structuredClone(this.chartOptions);
+
+    const groupedData = this.groupDataBySensorType(data);
+
+    options.series = Object.keys(groupedData).map(sensorType => {
+      const title = this.getSensorTypeTitle(sensorType as SENSOR_TYPE);
+
+      return {
+        type: "scatter",
+        title: title,
+        data: groupedData[sensorType],
+        xKey: "dateTime",
+        xName: "Date & Time",
+        yKey: "value",
+        yName: "Sensor Value",
+        labelKey: "sensorType",
+        labelName: "Sensor Type"
+      };
+    });
+
+    this.chartOptions = options;
+
+  }
+
+  private groupDataBySensorType(data: SensorData[]): Record<string, SensorData[]> {
+    return data.reduce((acc, item) => {
+      if (!acc[item.sensorType]) {
+        acc[item.sensorType] = [];
+      }
+      acc[item.sensorType].push(item);
+      return acc;
+    }, {} as Record<string, SensorData[]>);
+  }
+
+  private getSensorTypeTitle(sensorType: SENSOR_TYPE): string {
+    switch (sensorType) {
+      case SENSOR_TYPE.TEMPERATURE:
+        return "Temperature Data";
+      case SENSOR_TYPE.ALCOHOL_CONTENT_PERCENT:
+        return "Alcohol Content";
+      case SENSOR_TYPE.PRESSURE:
+        return "Pressure Data";
+      case SENSOR_TYPE.PH:
+        return "pH Level";
+      default:
+        return "Unknown Data";
+    }
   }
 }

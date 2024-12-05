@@ -1,178 +1,38 @@
-import {Injectable} from '@angular/core';
-import {delay, Observable, of} from 'rxjs';
-import {SENSOR_TYPE, SensorData} from '../model/sensor.model';
+import { Injectable } from '@angular/core';
+import { delay, Observable, of } from 'rxjs';
+import { SENSOR_TYPE, SensorData } from '../model/sensor.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SensorService {
 
-  /**
-   * Simulates fetching sensor data from a backend with a delay.
-   * @returns Observable<SensorData[]>
-   */
+  private generateMockData(): SensorData[] {
+    const randomSensorData: SensorData[] = [];
+    const startDate = new Date(2023, 2, 1);
+    const sensorTypes = Object.values(SENSOR_TYPE);
+
+    for (let i = 0; i < 50; i++) {
+      const randomDate = new Date(
+        startDate.getTime() +
+        Math.random() * (new Date().getTime() - startDate.getTime())
+      );
+
+      randomSensorData.push({
+        sensorType: sensorTypes[Math.floor(Math.random() * sensorTypes.length)],
+        sensorNr: Math.ceil(Math.random() * 16),
+        value: parseFloat((Math.random() * 100).toFixed(2)),
+        dateTime: randomDate,
+      });
+    }
+
+    return randomSensorData;
+  }
+
+
   getSensorData(): Observable<SensorData[]> {
-    const mockData: SensorData[] = [
-      {
-        sensorType: SENSOR_TYPE.TEMPERATURE,
-        sensorNr: 1,
-        value: 23.5,
-        dateTime: new Date('2022-12-01T08:00:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PH,
-        sensorNr: 2,
-        value: 60.2,
-        dateTime: new Date('2023-12-01T08:00:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },{
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-      {
-        sensorType: SENSOR_TYPE.PRESSURE,
-        sensorNr: 3,
-        value: 1013.25,
-        dateTime: new Date('2023-12-01T08:01:00'),
-      },
-
-    ];
-
-    const delayTime = 2000;
-
+    const mockData = this.generateMockData();
+    const delayTime = 2000; // Simulate network delay
     return of(mockData).pipe(delay(delayTime));
   }
 }
