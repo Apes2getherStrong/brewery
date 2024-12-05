@@ -19,6 +19,9 @@
 
   --brew-outline: #212529;
   --date-color-sheme: dark;
+
+  --brew-scroll-thumb: #333;
+  --brew-scroll-background: #191919 ;
 }
 
 [data-theme="light"] {
@@ -41,6 +44,34 @@
   --bs-border-radius: 0.5rem;
 
   --date-color-sheme: light;
+
+  --brew-scroll-thumb: #b3b2b2;
+  --brew-scroll-background: #f1f1f1;
+}
+
+
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--brew-scroll-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brew-scroll-thumb);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:var(--brew-scroll-background);
+}
+
+
+::-webkit-scrollbar-corner {
+  background: var(--brew-scroll-background);
 }
 
 
