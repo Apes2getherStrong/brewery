@@ -28,10 +28,31 @@ public class MqttService
 
     public async Task StartListeningAsync()
     {
+        // Obsługa otrzymanych wiadomości
         _mqttClient.UseApplicationMessageReceivedHandler(e =>
         {
             var message = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-            Console.WriteLine($"Otrzymano wiadomość: {message} na temacie: {e.ApplicationMessage.Topic}");
+            string topic = e.ApplicationMessage.Topic;
+
+            // Obsługa różnych tematów
+            switch (topic)
+            {
+                case "Temperature":
+                    Console.WriteLine($"Otrzymano wiadomość z TEMPERATURY: {message}");
+                    break;
+                case "Humidity":
+                    Console.WriteLine($"Otrzymano wiadomość z WILGOTNOŚCI: {message}");
+                    break;
+                case "Pressure":
+                    Console.WriteLine($"Otrzymano wiadomość z CIŚNIENIA: {message}");
+                    break;
+                case "Motion":
+                    Console.WriteLine($"Otrzymano wiadomość z RUCHU: {message}");
+                    break;
+                default:
+                    Console.WriteLine($"Otrzymano wiadomość z nieznanego tematu: {message}");
+                    break;
+            }
         });
 
         var options = new MqttClientOptionsBuilder()
@@ -41,8 +62,13 @@ public class MqttService
         await _mqttClient.ConnectAsync(options);
         Console.WriteLine($"Połączono z brokerem MQTT na {_brokerAddress}:{_brokerPort}");
 
-        await _mqttClient.SubscribeAsync("Temperature"); // Subskrybuj temat, np. Temperature
-        Console.WriteLine("Subskrybowano temat: Temperature");
+        // Subskrypcja tematów
+        await _mqttClient.SubscribeAsync("Temperature");
+        await _mqttClient.SubscribeAsync("Humidity");
+        await _mqttClient.SubscribeAsync("Pressure");
+        await _mqttClient.SubscribeAsync("Motion");
+
+        Console.WriteLine("Subskrybowano tematy: Temperature, Humidity, Pressure, Motion");
     }
 
     public async Task StopListeningAsync()

@@ -1,88 +1,77 @@
 import random
 from abc import abstractmethod, ABC
-
+from datetime import datetime
+import uuid
+import orjson
 
 class Sensor(ABC):
     NAME: str
-    UNIT: str
-    
-    def __init__(self, x: float, y: float, z: float):
-        self.x = x
-        self.y = y
-        self.z = z
+    _id_counter = 0
+
+    def __init__(self):
+        Sensor._id_counter += 1
+        self.sensor_nr = Sensor._id_counter
 
     @abstractmethod
-    def generate_data(self):
+    def generate_data(self, value=None):
         pass
+    
+    def __str__(self):
+        return f"ID: {self.sensor_nr} NAME: {self.NAME}"
 
-
+# Define four different sensors for beer types
 class TemperatureSensor(Sensor):
-    __id_counter = 0
-    NAME = "Temperature"
-    UNIT= "Celsius"
+    NAME = "TEMPERATURE"
 
-    def __init__(self, x: float, y: float, z: float):
-        super().__init__(x, y, z)
-        TemperatureSensor.__id_counter += 1
-        self.id = TemperatureSensor.__id_counter
+    def generate_data(self, value = None):
+        if value == None:
+            value = random.uniform(-10, 40)
+        return orjson.dumps({
+            "id": str(uuid.uuid4()),
+            "sensorType": self.NAME,
+            "sensorNr": self.sensor_nr,
+            "value": round(value, 2),
+            "dateTime": datetime.now().isoformat()
+        })
 
+class AlcoholContentSensor(Sensor):
+    NAME = "ALCOHOL_CONTENT_PERCENT"
 
-    def generate_data(self):
-        temp_base = 22
-        temperature_variation = random.uniform(-5, 5)
-        location_factor = (self.x + self.y + self.z) % 5
-        temperature = temp_base + temperature_variation + location_factor
-        return {"name": self.NAME, "id": self.id, "location": (self.x, self.y, self.z), "value": temperature, "unit": self.UNIT}
-
-
-class HumiditySensor(Sensor):
-    ___id_counter = 0
-    NAME = "Humidity"
-    UNIT= "Percent"
-
-    def __init__(self, x: float, y: float, z: float):
-        super().__init__(x, y, z)
-        HumiditySensor.___id_counter += 1
-        self.id = HumiditySensor.___id_counter
-
-
-    def generate_data(self):
-        humidity_base = 50
-        humidity_variation = random.uniform(-10, 10)
-        humidity = humidity_base + humidity_variation + (self.z % 10)
-        return {"name": self.NAME, "id": self.id, "location": (self.x, self.y, self.z), "value": humidity, "unit": self.UNIT}
-
+    def generate_data(self, value = None):
+        if value == None:
+            value = random.uniform(0, 15)
+        return orjson.dumps({
+            "id": str(uuid.uuid4()),
+            "sensorType": self.NAME,
+            "sensorNr": self.sensor_nr,
+            "value": round(value, 2),
+            "dateTime": datetime.now().isoformat()
+        })
 
 class PressureSensor(Sensor):
-    __id_counter = 0
-    NAME = "Pressure"
-    UNIT= "hPa"
-    
-    def __init__(self, x: float, y: float, z: float):
-        super().__init__(x, y, z)
-        PressureSensor.__id_counter += 1
-        self.id = PressureSensor.__id_counter
+    NAME = "PRESSURE"
 
-    
+    def generate_data(self, value = None):
+        if value == None:
+            value = random.uniform(1, 5)  # Pressure in bar
+        return orjson.dumps({
+            "id": str(uuid.uuid4()),
+            "sensorType": self.NAME,
+            "sensorNr": self.sensor_nr,
+            "value": round(value, 2),
+            "dateTime": datetime.now().isoformat()
+        })
 
-    def generate_data(self):
-        pressure_base = 1013
-        pressure_variation = random.uniform(-10, 10)
-        pressure = pressure_base + pressure_variation - (self.z * 0.1)
-        return {"name": self.NAME, "id": self.id, "location": (self.x, self.y, self.z), "value": pressure, "unit": self.UNIT}
+class PHSensor(Sensor):
+    NAME = "PH"
 
-
-class MotionSensor(Sensor):
-    __id_counter = 0
-    NAME = "Motion"
-    UNIT= ""
-
-    def __init__(self, x: float, y: float, z: float):
-        super().__init__(x, y, z)
-        MotionSensor.__id_counter += 1
-        self.id = MotionSensor.__id_counter
-
-
-    def generate_data(self):
-        motion_detected = random.choice([True, False])
-        return {"name": self.NAME, "id": self.id, "location": (self.x, self.y, self.z), "value": motion_detected, "unit": self.UNIT}
+    def generate_data(self, value = None):
+        if value == None:
+            value = random.uniform(3, 8)
+        return orjson.dumps({
+            "id": str(uuid.uuid4()),
+            "sensorType": self.NAME,
+            "sensorNr": self.sensor_nr,
+            "value": round(value, 2),
+            "dateTime": datetime.now().isoformat()
+        })
