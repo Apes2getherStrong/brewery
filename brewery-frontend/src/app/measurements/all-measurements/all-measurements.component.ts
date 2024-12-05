@@ -79,7 +79,6 @@ export class AllMeasurementsComponent implements OnInit {
   csvData: String = "";
 
 
-
   constructor(private sensorService: SensorService,
               private themeService: ThemeService,
               private stringDateTimeConvertorService: StringDateTimeConverterService,
@@ -191,5 +190,14 @@ export class AllMeasurementsComponent implements OnInit {
     console.log(this.jsonData)
   }
 
+  onFilterChanged() {
+    this.updateChart();
+  }
+
+  private updateChart(): void {
+    const renderedNodes = this.gridApi.getRenderedNodes();
+    const displayedData = renderedNodes.map(node => node.data);
+    this.sensorChartService.setSensorData(displayedData);
+  }
 
 }

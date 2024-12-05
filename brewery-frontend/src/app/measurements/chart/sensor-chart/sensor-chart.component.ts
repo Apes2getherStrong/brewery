@@ -67,7 +67,6 @@ export class SensorChartComponent implements OnInit {
     this.sensorChartService.sensorData$.subscribe((data) => {
       if (data) {
         this.sensorData = data;
-        console.log(data)
         this.updateChart(data);
       }
     });
