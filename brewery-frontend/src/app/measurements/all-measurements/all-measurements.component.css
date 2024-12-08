@@ -15,12 +15,13 @@
   border: none;
 }
 
+.find-button,
 .btn-secondary {
   background-color: var(--brew-background-primary);
   color: var(--brew-color-primary);
 }
 
-.find-button,
+
 .btn-secondary:hover {
   background-color: var(--brew-nav-color-accent);
   color: #000000;

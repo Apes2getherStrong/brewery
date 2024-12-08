@@ -3,15 +3,34 @@
   margin: 0;
   background-color: var(--brew-background-body) ;
   color: var(--brew-color-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 :root {
+  --brew--backgound-header: #1b263b;
+  --brew--background-content: #fff;
+  --brew-nav-color-accent: #ffac04;
+
+  --brew-background-body: #000;
+  --brew-background-secondary: #202c34;
+  --brew-background-primary: #202c34;
+
+  --brew-color-primary: #fff;
+  --brew-color-secondary: #fff;
+
+  --brew-outline: #212529;
+  --date-color-sheme: dark;
+
+  --brew-scroll-thumb: #333;
+  --brew-scroll-background: #191919 ;
+}
+
+[data-theme="light"] {
+
   --brew--backgound-header: #344e41;
   --brew--background-content: #a3b18a;
-  --brew-nav-color-accent: #fdc500;
+  --brew-nav-color-accent: #ffac04;
 
-  --brew-background-body: #dad7cd;
+  --brew-background-body: #ffac04;
   --brew-background-secondary: #588157;
   --brew-background-primary: #fff;
 
@@ -25,22 +44,34 @@
   --bs-border-radius: 0.5rem;
 
   --date-color-sheme: light;
+
+  --brew-scroll-thumb: #b3b2b2;
+  --brew-scroll-background: #f1f1f1;
 }
 
-[data-theme="dark"] {
-  --brew--backgound-header: #1b263b;
-  --brew--background-content: #fff;
-  --brew-nav-color-accent: #fdc500;
 
-  --brew-background-body: #000;
-  --brew-background-secondary: #202c34;
-  --brew-background-primary: #202c34;
 
-  --brew-color-primary: #fff;
-  --brew-color-secondary: #fff;
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
 
-  --brew-outline: #212529;
-  --date-color-sheme: dark;
+::-webkit-scrollbar-track {
+  background: var(--brew-scroll-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brew-scroll-thumb);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:var(--brew-scroll-background);
+}
+
+
+::-webkit-scrollbar-corner {
+  background: var(--brew-scroll-background);
 }
 
 

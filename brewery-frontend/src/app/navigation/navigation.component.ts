@@ -3,6 +3,7 @@ import {CommonModule, NgIf} from '@angular/common';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { faBars, faBeerMugEmpty } from '@fortawesome/free-solid-svg-icons';
 import {ThemeService} from '../service/theme.service';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -11,6 +12,8 @@ import {ThemeService} from '../service/theme.service';
     NgIf,
     FontAwesomeModule,
     CommonModule,
+    RouterLink,
+    RouterLinkActive,
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.css'

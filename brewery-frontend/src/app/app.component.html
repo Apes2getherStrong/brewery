@@ -1,2 +1,28 @@
+<div class="background-container">
+  <dotlottie-player
+    *ngIf="isDarkMode"
+    src="https://lottie.host/b3170c5c-5921-48d3-9a29-41eae59f1692/3nGSFfDmK4.lottie"
+    background="transparent"
+    speed="0.5"
+    loop
+    autoplay
+    style="width: 100%"
+    class="background-player">
+  </dotlottie-player>
+
+  <dotlottie-player
+    *ngIf="!isDarkMode"
+    src="https://lottie.host/8f1dc217-0ea7-4d97-b954-375e6710d8eb/fQzbDIaE0w.lottie"
+    background="transparent"
+    speed="0.5"
+    loop
+    autoplay
+    style="width: 100%"
+    class="background-player">
+  </dotlottie-player>
+</div>
+
+
 <app-navigation></app-navigation>
+
 <router-outlet />
