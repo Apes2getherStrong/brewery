@@ -46,6 +46,14 @@ else
 var mqttService = app.Services.GetRequiredService<MqttService>();
 await mqttService.StartListeningAsync();
 
+app.MapGet("/api/sensordata", async (MongoDbService mongoDbService) =>
+    {
+        var sensorData = await mongoDbService.GetAllSensorDataAsync();
+        return Results.Ok(sensorData); // Zwraca dane w formacie JSON
+    })
+    .WithName("GetAllSensorData")
+    .WithOpenApi();
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"

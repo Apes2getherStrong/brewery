@@ -15,15 +15,6 @@ public class MongoDbService
         var connectionString = configuration.GetConnectionString("MongoDB");
         var client = new MongoClient(connectionString);
         _database = client.GetDatabase(configuration["DatabaseName"]);
-        
-        var testDocument = new SensorData
-        {
-            Topic = "Test",
-            Value = "123",
-            Timestamp = DateTime.UtcNow
-        };
-
-        SensorDataCollection.InsertOne(testDocument);
     }
     
     public IMongoCollection<SensorData> SensorDataCollection =>

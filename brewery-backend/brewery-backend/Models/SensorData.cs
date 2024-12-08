@@ -12,4 +12,5 @@ public class SensorData
     public string Topic { get; set; } 
     public string Value { get; set; } 
     public DateTime Timestamp { get; set; } 
+    public int SensorNr { get; set; }
 }
