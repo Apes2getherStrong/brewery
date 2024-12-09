@@ -13,7 +13,7 @@ import {SensorData} from '../../sensor/model/sensor.model';
   templateUrl: './sensor-table.component.html',
   styleUrl: './sensor-table.component.css'
 })
-export class SensorTableComponent implements OnInit, OnChanges {
+export class SensorTableComponent implements OnInit {
 
   themeClass = 'ag-theme-quartz-dark';
 
@@ -39,11 +39,6 @@ export class SensorTableComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['rowData'] && this.rowData) {
-      console.log(this.rowData);
-    }
-  }
 
   onGridReady(params: GridReadyEvent): void {
     this.gridApi = params.api;
