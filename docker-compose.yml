@@ -12,9 +12,7 @@ services:
       - ./sensor_queue/mosquitto/log:/mosquitto/log
 
   sensors:
-    build:
-      context: ./sensor_queue
-      dockerfile: Dockerfile
+    image: janek1010/brewery-main-sensors:latest
     container_name: sensors
     depends_on:
       - mosquitto
