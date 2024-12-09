@@ -1,16 +1,19 @@
-// SPDX-License-Identifier: MIT
+ // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract SensorToken is ERC20 {
+    address public admin;
     mapping(address => uint256) public sensorBalances;
 
-    constructor() ERC20("SensorToken", "SENS") {}
+    constructor() ERC20("SensorToken", "SENS") {
+        admin = msg.sender;
+    }
 
-    // Funkcja nagradzania sensora - może ją wywołać każdy użytkownik
     function rewardSensor(address sensor, uint256 amount) external {
-        _mint(sensor, amount); // Mintowanie tokenów dla sensora
+        require(msg.sender == admin, "Only admin can reward sensors");
+        _mint(sensor, amount);
         sensorBalances[sensor] += amount;
     }
 
@@ -19,7 +22,7 @@ contract SensorToken is ERC20 {
         return balanceOf(sensor);
     }
 
-    // Możliwość przeglądania stanu tokenów dla sensora przez każdego użytkownika
+    // Możliwość przeglądania stanu tokenów dla sensora przez administratora
     function getSensorBalance(address sensor) external view returns (uint256) {
         return sensorBalances[sensor];
     }
