@@ -36,5 +36,28 @@ public class MongoDbService
     {
         return await SensorDataCollection.Find(_ => true).ToListAsync();
     }
+    
+    public async Task<List<SensorData>> GetSensorsDataInDateRangeAsync(DateTime start, DateTime end)
+    {
+        return await SensorDataCollection
+            .Find(data => data.Date >= start && data.Date <= end)
+            .ToListAsync();
+    }
 
+    public async Task<List<SensorData>> GetLatestSensorDataAsync(int sensorNr, int howManyRecords)
+    {
+        return await SensorDataCollection
+            .Find(data => data.SensorNr == sensorNr)
+            .SortByDescending(data => data.Date)
+            .Limit(howManyRecords)
+            .ToListAsync();
+    }
+    
+    public async Task<double> GetSensorLatestAvgAsync(int sensorNr, int howManyRecords)
+    {
+        var latestRecords = await GetLatestSensorDataAsync(sensorNr, howManyRecords);
+        return latestRecords
+            .Where(record => double.TryParse(record.Value, out _))
+            .Average(record => double.Parse(record.Value));
+    }
 }

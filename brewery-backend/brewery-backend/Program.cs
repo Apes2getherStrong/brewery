@@ -34,7 +34,7 @@ if (await mongoDbService.TestConnectionAsync())
     var sensorData = await mongoDbService.GetAllSensorDataAsync();
     foreach (var data in sensorData)
     {
-        Console.WriteLine($"Topic: {data.Topic}, Value: {data.Value}, Timestamp: {data.Timestamp}");
+        Console.WriteLine($"SensorType: {data.SensorType}, Value: {data.Value}, Timestamp: {data.Date}");
     }
 }
 else
@@ -53,6 +53,31 @@ app.MapGet("/api/sensordata", async (MongoDbService mongoDbService) =>
     })
     .WithName("GetAllSensorData")
     .WithOpenApi();
+
+app.MapGet("/api/sensordata/daterange", async (MongoDbService mongoDbService, DateTime start, DateTime end) =>
+    {
+        var sensorData = await mongoDbService.GetSensorsDataInDateRangeAsync(start, end);
+        return Results.Ok(sensorData);
+    })
+    .WithName("GetSensorsDataInDateRange")
+    .WithOpenApi();
+
+app.MapGet("/api/sensordata/latest", async (MongoDbService mongoDbService, int sensorNr, int howManyRecords) =>
+    {
+        var sensorData = await mongoDbService.GetLatestSensorDataAsync(sensorNr, howManyRecords);
+        return Results.Ok(sensorData);
+    })
+    .WithName("GetLatestSensorData")
+    .WithOpenApi();
+
+app.MapGet("/api/sensordata/latest/avg", async (MongoDbService mongoDbService, int sensorNr, int howManyRecords) =>
+    {
+        var average = await mongoDbService.GetSensorLatestAvgAsync(sensorNr, howManyRecords);
+        return Results.Ok(average);
+    })
+    .WithName("GetSensorLatestAvg")
+    .WithOpenApi();
+
 
 var summaries = new[]
 {
