@@ -21,7 +21,6 @@ import {StringDateTimeConverterService} from '../table/converter/string-date-tim
 import {faDownload} from '@fortawesome/free-solid-svg-icons';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {CsvToJsonConverterService} from '../table/converter/csv-to-json-converter.service';
-import {SensorChartService} from '../chart/service/sensor-chart-service.service';
 import {SensorChartComponent} from '../chart/sensor-chart/sensor-chart.component';
 
 @Component({
@@ -47,6 +46,7 @@ export class AllMeasurementsComponent implements OnInit {
   themeClass = 'ag-theme-quartz-dark';
 
   sensorData: SensorData[] | null = null;
+  displayedSensorData: SensorData[] | null = null;
 
   private gridApi!: GridApi;
 
@@ -82,21 +82,16 @@ export class AllMeasurementsComponent implements OnInit {
   constructor(private sensorService: SensorService,
               private themeService: ThemeService,
               private stringDateTimeConvertorService: StringDateTimeConverterService,
-              private csvToJsonConverterService: CsvToJsonConverterService,
-              private sensorChartService: SensorChartService) {
-
-
-  }
+              private csvToJsonConverterService: CsvToJsonConverterService) {}
 
   ngOnInit(): void {
     this.themeService.isDarkMode$.subscribe((isDarkMode) => {
       this.themeClass = isDarkMode ? 'ag-theme-quartz-dark' : 'ag-theme-alpine';
     });
 
-    this.sensorService.getSensorData().subscribe((data) => {
-      this.sensorData = data;
-      this.sensorChartService.setSensorData(data);
-    });
+    //Todo call getDataFromDateRange from 15 minutes ago to now and maybe set start and end datetime fields accordingly
+    this.getDataFromDataRange();
+
   }
 
   formatDate(params: any): string {
@@ -112,6 +107,18 @@ export class AllMeasurementsComponent implements OnInit {
 
   getDataFromDataRange() {
 
+    //tmp - later call getSensorData with start and end params
+    this.sensorService.getSensorData().subscribe((data) => {
+      this.sensorData = data;
+
+      //Todo pass the data to the chart (IF IT PASSES THROUGH THE FILTERS) - this.gridApi.doesRowPassFilter({ rowNode });
+      this.displayedSensorData = this.sensorData;
+
+      //Todo update csv and json
+      this.jsonData = null;
+      this.csvData = "";
+    });
+
     const startDayTime = this.stringDateTimeConvertorService.getDateTimeFromStringDateAndStringTime(this.startDate, this.startTime);
     const endDayTime = this.stringDateTimeConvertorService.getDateTimeFromStringDateAndStringTime(this.endDate, this.endTime);
 
@@ -121,8 +128,6 @@ export class AllMeasurementsComponent implements OnInit {
       console.log("end date: " + this.endDate)
       console.log("end time: " + this.endTime)
 
-      this.jsonData = null;
-      this.csvData = "";
     }
   }
 
@@ -194,8 +199,7 @@ export class AllMeasurementsComponent implements OnInit {
 
   private updateChart(): void {
     const renderedNodes = this.gridApi.getRenderedNodes();
-    const displayedData = renderedNodes.map(node => node.data);
-    this.sensorChartService.setSensorData(displayedData);
+    this.displayedSensorData = renderedNodes.map(node => node.data);
   }
 
   onSortChanged() {

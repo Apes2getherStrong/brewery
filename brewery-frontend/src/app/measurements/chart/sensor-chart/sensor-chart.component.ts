@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { SensorChartService } from '../service/sensor-chart-service.service';
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {SENSOR_TYPE, SensorData} from '../../sensor/model/sensor.model';
 import { AgCharts } from 'ag-charts-angular';
 import { AgChartOptions } from 'ag-charts-community';
@@ -15,11 +14,11 @@ import {ThemeService} from '../../../service/theme.service';
 export class SensorChartComponent implements OnInit {
   //https://www.ag-grid.com/charts/angular/scatter-series/
 
-  sensorData: SensorData[] | null = null;
+  @Input() sensorData: SensorData[] | null = null;
 
   public chartOptions: AgChartOptions;
 
-  constructor(private sensorChartService: SensorChartService,  private themeService: ThemeService) {
+  constructor(private themeService: ThemeService) {
     this.chartOptions =  this.initChartOptions()
   }
 
@@ -64,12 +63,12 @@ export class SensorChartComponent implements OnInit {
         this.switchTheme(isDarkMode);
     });
 
-    this.sensorChartService.sensorData$.subscribe((data) => {
-      if (data) {
-        this.sensorData = data;
-        this.updateChart(data);
-      }
-    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['sensorData'] && this.sensorData) {
+      this.updateChart(this.sensorData);
+    }
   }
 
   private updateChart(data: SensorData[]): void {
