@@ -1,0 +1,10 @@
+<input type="text" value="AVG:" readonly style="width: 100px">
+<input type="number"  [(ngModel)]="avg" readonly style="width: 100px">
+
+<app-sensor-table
+  [rowData]="sensorData"
+  [columnDefs]="colDefs"
+  [defaultColDef]="defaultColDef"
+  [pagination]="false"
+  (gridReady)="onGridReady($event)">
+</app-sensor-table>

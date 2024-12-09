@@ -27,9 +27,7 @@
   color: #000000;
 }
 
-input {
-  color-scheme: var(--date-color-sheme);
-}
+
 button {
   background-color: var(--brew-background-primary);
   color: var(--brew-color-primary);

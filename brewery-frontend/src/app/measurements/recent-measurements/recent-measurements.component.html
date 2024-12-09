@@ -1,1 +1,20 @@
-<p>recent-measurements works!</p>
+<div class="row w-100 d-flex flex-column align-items-center mt-4">
+  <div class="col-md-10">
+    <div class="row g-3 justify-content-around  mb-5">
+      <div
+        *ngFor="let item of items; let i = index"
+        class="col-md-5 d-flex flex-column align-items-center p-3">
+
+
+        <div class="d-flex justify-content-center align-items-center mt-3 w-100 p-3 ">
+          <div  style="height: 20vh; width: 100%">
+            <app-sensor-recent-table>
+
+            </app-sensor-recent-table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,6 +5,10 @@
   color: var(--brew-color-primary);
 }
 
+input {
+  color-scheme: var(--date-color-sheme);
+}
+
 :root {
   --brew--backgound-header: #1b263b;
   --brew--background-content: #fff;
