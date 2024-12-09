@@ -22,6 +22,7 @@ import {faDownload} from '@fortawesome/free-solid-svg-icons';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {CsvToJsonConverterService} from '../table/converter/csv-to-json-converter.service';
 import {SensorChartComponent} from '../chart/sensor-chart/sensor-chart.component';
+import {SensorTableComponent} from '../table/sensors-table/sensor-table.component';
 
 @Component({
   standalone: true,
@@ -35,7 +36,7 @@ import {SensorChartComponent} from '../chart/sensor-chart/sensor-chart.component
     MatIconModule,
     MatButtonModule,
     FormsModule,
-    CommonModule, FaIconComponent, SensorChartComponent,],
+    CommonModule, FaIconComponent, SensorChartComponent, SensorTableComponent, SensorTableComponent,],
   templateUrl: './all-measurements.component.html',
   styleUrl: './all-measurements.component.css',
 })
@@ -99,8 +100,8 @@ export class AllMeasurementsComponent implements OnInit {
     return date ? new Date(date).toLocaleString() : '';
   }
 
-  onGridReady(params: GridReadyEvent): void {
-    this.gridApi = params.api;
+  onGridReady(api: GridApi): void {
+    this.gridApi = api;
     this.onShowJson();
     this.onShowCsv();
   }

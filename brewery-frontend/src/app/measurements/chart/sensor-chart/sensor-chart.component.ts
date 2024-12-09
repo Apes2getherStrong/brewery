@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {SENSOR_TYPE, SensorData} from '../../sensor/model/sensor.model';
 import { AgCharts } from 'ag-charts-angular';
 import { AgChartOptions } from 'ag-charts-community';
@@ -11,7 +11,7 @@ import {ThemeService} from '../../../service/theme.service';
   templateUrl: './sensor-chart.component.html',
   styleUrls: ['./sensor-chart.component.css'],
 })
-export class SensorChartComponent implements OnInit {
+export class SensorChartComponent implements OnInit, OnChanges {
   //https://www.ag-grid.com/charts/angular/scatter-series/
 
   @Input() sensorData: SensorData[] | null = null;

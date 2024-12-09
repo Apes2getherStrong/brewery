@@ -36,21 +36,22 @@
       </div>
     </div>
 
-    <div style="height: 75vh;" class="mb-5">
-      <ag-grid-angular
-        style="width: 100%; height: 100%;"
-        (filterChanged)="onFilterChanged()"
-        (sortChanged)="onSortChanged()"
-        [class]="themeClass"
+    <div style="height: 75vh;">
+      <app-sensor-table
         [rowData]="sensorData"
         [columnDefs]="colDefs"
         [defaultColDef]="defaultColDef"
         [pagination]="pagination"
         [paginationPageSize]="paginationPageSize"
         [paginationPageSizeSelector]="paginationPageSizeSelector"
-        (gridReady)="onGridReady($event)"
+        (filterChanged)="onFilterChanged()"
+        (sortChanged)="onSortChanged()"
         (firstDataRendered)="onFirstDataRendered()"
-      ></ag-grid-angular>
+        (gridReady)="onGridReady($event)">
+      </app-sensor-table>
+    </div>
+
+    <div class="mt-5">
     </div>
 
     <app-sensor-chart [sensorData]="displayedSensorData"></app-sensor-chart>

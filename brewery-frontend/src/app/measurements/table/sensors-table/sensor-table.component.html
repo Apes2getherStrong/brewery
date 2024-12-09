@@ -1,0 +1,16 @@
+<div style="height: 100%">
+  <ag-grid-angular
+    style="width: 100%; height: 100%;"
+    (filterChanged)="onFilterChanged()"
+    (sortChanged)="onSortChanged()"
+    [class]="themeClass"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [pagination]="pagination"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    (gridReady)="onGridReady($event)"
+    (firstDataRendered)="onFirstDataRendered()"
+  ></ag-grid-angular>
+</div>
