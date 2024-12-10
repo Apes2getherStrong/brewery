@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using brewery_backend.Hubs;
 using brewery_backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,19 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSignalR();
+
 builder.Services.AddSingleton<MongoDbService>();
 builder.Services.AddSingleton<MqttService>();
-
-// Dodanie polityki CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontend",
-        builder => builder
-            .WithOrigins("http://localhost:4200") // Adres twojego frontendu
-            .AllowAnyMethod()
-            .AllowAnyHeader());
-});
-
 builder.Services.AddSingleton(provider =>
 {
     var configuration = provider.GetRequiredService<IConfiguration>();
@@ -32,6 +24,16 @@ builder.Services.AddSingleton(provider =>
     var adminPrivateKey = blockchainSettings["AdminPrivateKey"];
     var abi = blockchainSettings["ContractAbi"];
     return new BlockchainService(rpcUrl, contractAddress, adminPrivateKey, abi);
+});
+
+// Dodanie polityki CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        builder => builder
+            .WithOrigins("http://localhost:4200") // Adres twojego frontendu
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
 
 var app = builder.Build();
@@ -137,6 +139,8 @@ app.MapGet("/weatherforecast", () =>
     })
     .WithName("GetWeatherForecast")
     .WithOpenApi();
+
+app.MapHub<SensorHub>("/sensorHub");
 
 app.Run();
 
