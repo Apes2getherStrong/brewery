@@ -28,14 +28,22 @@ export class SensorService {
   }
 
   getSensorDataInRange(startDate: Date, endDate: Date): Observable<SensorData[]> {
-    console.log(startDate);
-    console.log(endDate);
+
 
     const params = new HttpParams()
       .set('start', startDate.toISOString())
       .set('end', endDate.toISOString());
 
-    return this.http.get<SensorData[]>(`${this.apiUrl}/daterange`, { params });
+
+    return this.http.get<SensorData[]>(`${this.apiUrl}/daterange`, { params }).pipe(
+      map((data: any[]) =>
+        data.map(item => ({
+          ...item,
+          value: parseFloat(item.value),
+          dateTime: new Date(item.date),
+        }))
+      )
+    );
   }
 
   getAllSensorData(): Observable<SensorData[]> {
