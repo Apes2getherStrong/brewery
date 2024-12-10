@@ -26,6 +26,7 @@
     "@angular/router": "^19.0.0",
     "@fortawesome/angular-fontawesome": "^1.0.0",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
+    "@microsoft/signalr": "^8.0.7",
     "ag-charts-angular": "^10.3.3",
     "ag-grid-angular": "^32.3.3",
     "bootstrap": "^5.3.3",

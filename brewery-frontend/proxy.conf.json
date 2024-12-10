@@ -2,5 +2,9 @@
   "/api/sensordata": {
     "target": "http://localhost:5000",
     "secure": false
+  },
+  "/sensorHub": {
+    "target": "http://localhost:5000",
+    "secure": false
   }
 }
