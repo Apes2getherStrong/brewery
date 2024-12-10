@@ -33,7 +33,8 @@ builder.Services.AddCors(options =>
         builder => builder
             .WithOrigins("http://localhost:4200") // Adres twojego frontendu
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            .AllowCredentials());
 });
 
 var app = builder.Build();
@@ -55,7 +56,7 @@ var mongoDbService = app.Services.GetRequiredService<MongoDbService>();
 if (await mongoDbService.TestConnectionAsync())
 {
     Console.WriteLine("Połączenie z bazą danych MongoDB zostało nawiązane pomyślnie!");
-    
+
     var sensorData = await mongoDbService.GetAllSensorDataAsync();
     foreach (var data in sensorData)
     {
@@ -148,4 +149,3 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
-
