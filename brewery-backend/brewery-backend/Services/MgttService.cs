@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Nodes;
+using brewery_backend.Hubs;
 using brewery_backend.Models;
+using Microsoft.AspNetCore.SignalR;
 using MQTTnet.Client.Options;
 
 namespace brewery_backend.Services;
@@ -18,15 +20,19 @@ public class MqttService
     private readonly string _brokerAddress;
     private readonly int _brokerPort;
     private readonly MongoDbService _mongoDbService;
+    private readonly IHubContext<SensorHub> _sensorHubContext;
+    private readonly BlockchainService _blockchainService;
 
-    public MqttService(IConfiguration configuration, MongoDbService mongoDbService)
+    public MqttService(IConfiguration configuration, MongoDbService mongoDbService, BlockchainService blockchainService, IHubContext<SensorHub> sensorHubContext )
     {
         var mqttSettings = configuration.GetSection("MqttSettings");
         _brokerAddress = mqttSettings.GetValue<string>("Host");
         _brokerPort = mqttSettings.GetValue<int>("Port");
 
         _mongoDbService = mongoDbService;
+        _sensorHubContext = sensorHubContext;
 
+        _blockchainService = blockchainService;
         var factory = new MqttFactory();
         _mqttClient = factory.CreateMqttClient();
     }
@@ -48,7 +54,6 @@ public class MqttService
                 SensorType = jsonObject?["sensorType"]?.ToString(),
                 SensorNr = jsonObject?["sensorNr"]?.GetValue<int>() ?? 0,
                 Value = jsonObject?["value"]?.ToString(),
-                // Value = Math.Abs(jsonObject?["value"]?.GetValue<double>() ?? 0).ToString(),
                 Date = jsonObject?["dateTime"]?.GetValue<DateTime>() ?? DateTime.MinValue,
             };
 
@@ -56,10 +61,15 @@ public class MqttService
             {
                 // Zapisz dane do bazy danych
                 await _mongoDbService.SensorDataCollection.InsertOneAsync(sensorData);
+                
+                // Wysyłanie danych do klientów SignalR
+                await _sensorHubContext.Clients.All.SendAsync("ReceiveSensorData", sensorData);
+                
+                await _blockchainService.RewardSensorAsync(sensorData.SensorNr, 1.0m);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Wystąpił błąd podczas zapisu do MongoDB: {ex.Message}");
+                Console.WriteLine($"Wystąpił błąd podczas zapisu do MongoDB lub blockchaina: {ex.Message}");
             }
 
             // Obsługa różnych tematów
