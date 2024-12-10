@@ -7,13 +7,22 @@ using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<MongoDbService>();
 builder.Services.AddSingleton<MqttService>();
+builder.Services.AddSingleton(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var blockchainSettings = configuration.GetSection("Blockchain");
+    var rpcUrl = blockchainSettings["RpcUrl"];
+    var contractAddress = blockchainSettings["ContractAddress"];
+    var adminPrivateKey = blockchainSettings["AdminPrivateKey"];
+    var abi = blockchainSettings["ContractAbi"];
+    return new BlockchainService(rpcUrl, contractAddress, adminPrivateKey, abi);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -76,6 +85,22 @@ app.MapGet("/api/sensordata/latest/avg", async (MongoDbService mongoDbService, i
         return Results.Ok(average);
     })
     .WithName("GetSensorLatestAvg")
+    .WithOpenApi();
+
+app.MapGet("/api/sensors/info", async (BlockchainService blockchainService) =>
+    {
+        try
+        {
+            var sensorsInfo = await blockchainService.GetAllSensorsInfoAsync();
+            return Results.Ok(sensorsInfo);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Wystąpił błąd podczas pobierania informacji o sensorach: {ex.Message}");
+            return Results.Problem("Wystąpił błąd podczas pobierania danych.");
+        }
+    })
+    .WithName("GetAllSensorsInfo")
     .WithOpenApi();
 
 

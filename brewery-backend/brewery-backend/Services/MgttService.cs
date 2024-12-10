@@ -18,15 +18,16 @@ public class MqttService
     private readonly string _brokerAddress;
     private readonly int _brokerPort;
     private readonly MongoDbService _mongoDbService;
+    private readonly BlockchainService _blockchainService;
 
-    public MqttService(IConfiguration configuration, MongoDbService mongoDbService)
+    public MqttService(IConfiguration configuration, MongoDbService mongoDbService, BlockchainService blockchainService )
     {
         var mqttSettings = configuration.GetSection("MqttSettings");
         _brokerAddress = mqttSettings.GetValue<string>("Host");
         _brokerPort = mqttSettings.GetValue<int>("Port");
 
         _mongoDbService = mongoDbService;
-
+        _blockchainService = blockchainService;
         var factory = new MqttFactory();
         _mqttClient = factory.CreateMqttClient();
     }
@@ -56,10 +57,12 @@ public class MqttService
             {
                 // Zapisz dane do bazy danych
                 await _mongoDbService.SensorDataCollection.InsertOneAsync(sensorData);
+                
+                await _blockchainService.RewardSensorAsync(sensorData.SensorNr, 1.0m);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Wystąpił błąd podczas zapisu do MongoDB: {ex.Message}");
+                Console.WriteLine($"Wystąpił błąd podczas zapisu do MongoDB lub blockchaina: {ex.Message}");
             }
 
             // Obsługa różnych tematów
@@ -104,4 +107,5 @@ public class MqttService
         await _mqttClient.DisconnectAsync();
         Console.WriteLine("Rozłączono z brokerem MQTT");
     }
+    
 }
