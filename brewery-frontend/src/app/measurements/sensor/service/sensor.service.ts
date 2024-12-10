@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { delay, Observable, of } from 'rxjs';
+import {delay, map, Observable, of} from 'rxjs';
 import { SENSOR_TYPE, SensorData } from '../model/sensor.model';
 
 @Injectable({
@@ -39,7 +39,15 @@ export class SensorService {
   }
 
   getAllSensorData(): Observable<SensorData[]> {
-    return this.http.get<SensorData[]>(`${this.apiUrl}`);
+    return this.http.get<SensorData[]>(`${this.apiUrl}`).pipe(
+      map((data: any[]) =>
+        data.map(item => ({
+          ...item,
+          value: parseFloat(item.value),
+          dateTime: new Date(item.date),
+        }))
+      )
+    );
   }
 
   private generateMockData(): SensorData[] {
