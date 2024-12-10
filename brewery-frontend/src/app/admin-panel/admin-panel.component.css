@@ -1,0 +1,14 @@
+.card-header {
+  background-color: var(--brew--backgound-header);
+  color: var(--brew--background-content);
+}
+
+.card {
+  border: none;
+}
+
+
+.card-body {
+  background-color: var(--brew-background-primary);
+  color: var(--brew-color-primary);
+}
