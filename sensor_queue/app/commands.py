@@ -8,7 +8,8 @@ def generate_data(sensors, mqtt_client):
                 data = sensor.generate_data()
                 topic = sensor.NAME
                 mqtt_client.publish(topic, data)
-            time.sleep(2) 
+                time.sleep(0.25)
+            # time.sleep(2)
     except KeyboardInterrupt:
         print("\nData generation interrupted.")
 
@@ -21,7 +22,8 @@ def generate_multiple_times(sensors, mqtt_client, count):
                 data = sensor.generate_data()
                 topic = sensor.NAME
                 mqtt_client.publish(topic, data)
-            time.sleep(2)  
+                time.sleep(0.25)
+            # time.sleep(2)  
         print("finished")
     except KeyboardInterrupt:
         print("\nData generation interrupted.")
