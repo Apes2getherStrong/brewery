@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { delay, Observable, of } from 'rxjs';
 import { SENSOR_TYPE, SensorData } from '../model/sensor.model';
 
@@ -6,6 +7,40 @@ import { SENSOR_TYPE, SensorData } from '../model/sensor.model';
   providedIn: 'root',
 })
 export class SensorService {
+  private apiUrl = 'http://localhost:5000/api/sensordata';
+
+  constructor(private http: HttpClient) {}
+
+  getLatestSensorData(sensorNr: number, howManyRecords: number): Observable<SensorData[]> {
+    const params = new HttpParams()
+      .set('sensorNr', sensorNr.toString())
+      .set('howManyRecords', howManyRecords.toString());
+
+    return this.http.get<SensorData[]>(`${this.apiUrl}/latest`, { params });
+  }
+
+  getLatestSensorAvg(sensorNr: number, howManyRecords: number): Observable<number> {
+    const params = new HttpParams()
+      .set('sensorNr', sensorNr.toString())
+      .set('howManyRecords', howManyRecords.toString());
+
+    return this.http.get<number>(`${this.apiUrl}/latest/avg`, { params });
+  }
+
+  getSensorDataInRange(startDate: Date, endDate: Date): Observable<SensorData[]> {
+    console.log(startDate);
+    console.log(endDate);
+
+    const params = new HttpParams()
+      .set('start', startDate.toISOString())
+      .set('end', endDate.toISOString());
+
+    return this.http.get<SensorData[]>(`${this.apiUrl}/daterange`, { params });
+  }
+
+  getAllSensorData(): Observable<SensorData[]> {
+    return this.http.get<SensorData[]>(`${this.apiUrl}`);
+  }
 
   private generateMockData(): SensorData[] {
     const randomSensorData: SensorData[] = [];
@@ -28,7 +63,6 @@ export class SensorService {
 
     return randomSensorData;
   }
-
 
   getSensorData(): Observable<SensorData[]> {
     const mockData = this.generateMockData();

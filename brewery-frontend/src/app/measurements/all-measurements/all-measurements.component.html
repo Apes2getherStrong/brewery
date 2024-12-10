@@ -1,10 +1,11 @@
 <div class="row w-100 d-flex flex-column align-items-center mt-4">
   <div class="col-md-10 " >
 
-    <div class="row w-100 justify-content-around">
-      <div class="col">
+    <div class="row w-100 align-items-center ">
 
-        <input type="text" value="Start time" readonly>
+      <div class="col d-flex align-items-center justify-content-start" [ngStyle]="{ visibility: shouldFindAll ? 'hidden' : 'visible' }">
+
+        <input class="ms-5" type="text" value="Start time" style="width: 100px" readonly>
         <input
           type="date"
           id="startDate"
@@ -12,14 +13,11 @@
           name="trip-start"
           value="2024-12-13"
           min="2018-01-01"
-          max="2025-12-31"
-        />
+          max="2025-12-31" />
         <input type="time" id="startTime" [(ngModel)]="startTime" name="appt" required />
         <button (click)="setStartDateTimeToNow()">Set to now</button>
 
-        <!--<div class="mb-1"></div>-->
-
-        <input class="ms-5" type="text" value="End time" readonly>
+        <input class="ms-5" type="text" value="End time" readonly style="width: 100px">
         <input
           type="date"
           id="endDate"
@@ -32,8 +30,19 @@
         <input type="time" id="endTime"  [(ngModel)]="endTime" name="appt" required />
         <button (click)="setEndDateTimeToNow()">Set to now</button>
 
-        <button class="btn btn-outline-secondary ms-3 mb-2 find-button" (click)="getDataFromDataRange()">Get Data</button>
       </div>
+
+      <div class="col-1 d-flex align-items-center">
+        <label>
+          <input type="checkbox" [(ngModel)]="shouldFindAll" />
+          Find All
+        </label>
+      </div>
+
+      <div class="col-1 d-flex align-items-center justify-content-end">
+        <button class="btn btn-outline-secondary find-button" (click)="getData()">Get Data</button>
+      </div>
+
     </div>
 
     <div style="height: 75vh;">
