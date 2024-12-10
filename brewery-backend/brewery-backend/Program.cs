@@ -12,6 +12,17 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<MongoDbService>();
 builder.Services.AddSingleton<MqttService>();
+
+// Dodanie polityki CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        builder => builder
+            .WithOrigins("http://localhost:4200") // Adres twojego frontendu
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 builder.Services.AddSingleton(provider =>
 {
     var configuration = provider.GetRequiredService<IConfiguration>();
@@ -31,6 +42,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Zastosowanie polityki CORS
+app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
 
