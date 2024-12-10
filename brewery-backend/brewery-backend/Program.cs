@@ -56,12 +56,6 @@ var mongoDbService = app.Services.GetRequiredService<MongoDbService>();
 if (await mongoDbService.TestConnectionAsync())
 {
     Console.WriteLine("Połączenie z bazą danych MongoDB zostało nawiązane pomyślnie!");
-
-    var sensorData = await mongoDbService.GetAllSensorDataAsync();
-    foreach (var data in sensorData)
-    {
-        Console.WriteLine($"SensorType: {data.SensorType}, Value: {data.Value}, Timestamp: {data.Date}");
-    }
 }
 else
 {
