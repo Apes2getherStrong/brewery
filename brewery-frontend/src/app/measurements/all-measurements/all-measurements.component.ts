@@ -92,7 +92,6 @@ export class AllMeasurementsComponent implements OnInit {
       this.themeClass = isDarkMode ? 'ag-theme-quartz-dark' : 'ag-theme-alpine';
     });
 
-    //Todo call getDataFromDateRange from 15 minutes ago to now and maybe set start and end datetime fields accordingly
     this.initDateAndTime()
 
     this.getData();
@@ -112,11 +111,6 @@ export class AllMeasurementsComponent implements OnInit {
 
     this.endDate = this.stringDateTimeConvertorService.getStringDateFromDateTimeKebab(now);
     this.endTime = this.stringDateTimeConvertorService.getStringTimeFromDateTimeColon(now);
-
-    console.log('Start Date:', this.startDate);
-    console.log('Start Time:', this.startTime);
-    console.log('End Date:', this.endDate);
-    console.log('End Time:', this.endTime);
 
   }
 
@@ -141,21 +135,16 @@ export class AllMeasurementsComponent implements OnInit {
       this.getDataFromDateTimeRange();
     }
 
-
-
+    this.onShowJson();
+    this.onShowCsv();
   }
 
   getAllData() {
     this.sensorService.getAllSensorData().subscribe((data) => {
 
       this.sensorData = data;
-
-      //Todo pass the data to the chart (IF IT PASSES THROUGH THE FILTERS) - this.gridApi.doesRowPassFilter({ rowNode });
       this.displayedSensorData = this.sensorData;
 
-      //Todo update csv and json
-      this.jsonData = null;
-      this.csvData = "";
     })
   }
 
@@ -164,16 +153,8 @@ export class AllMeasurementsComponent implements OnInit {
     const endDateTime = this.stringDateTimeConvertorService.getDateTimeFromStringDateAndStringTime(this.endDate, this.endTime);
     this.sensorService.getSensorDataInRange(startDateTime, endDateTime).subscribe((data) => {
 
-
       this.sensorData = data;
-
-      //Todo pass the data to the chart (IF IT PASSES THROUGH THE FILTERS) - this.gridApi.doesRowPassFilter({ rowNode });
       this.displayedSensorData = this.sensorData;
-
-      //Todo update csv and json
-      this.jsonData = null;
-      this.csvData = "";
-
 
     });
   }

@@ -2,14 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {delay, map, Observable, of} from 'rxjs';
 import { SENSOR_TYPE, SensorData } from '../model/sensor.model';
+import {SensorInfo} from '../model/sensor-info.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SensorService {
   private apiUrl = 'http://localhost:5000/api/sensordata';
+  private sensorInfoUrl = 'http://localhost:5000/api/sensors/info';
 
   constructor(private http: HttpClient) {}
+
+
+  getSensorsInfo(): Observable<SensorInfo[]> {
+    return this.http.get<SensorInfo[]>(`${this.sensorInfoUrl}`);
+  }
 
   getLatestSensorData(sensorNr: number, howManyRecords: number): Observable<SensorData[]> {
     const params = new HttpParams()

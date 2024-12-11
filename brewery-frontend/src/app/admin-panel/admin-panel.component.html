@@ -1,17 +1,15 @@
 <div class="row w-100 d-flex flex-column align-items-center mt-4">
   <div class="col-md-10">
     <div class="row g-3 justify-content-around mb-5">
-      <div
-        *ngFor="let item of items; let i = index"
-        class="col-md-3 d-flex flex-column align-items-center p-3">
+      <div *ngFor="let sensor of sensorsInfo" class="col-md-3 d-flex flex-column align-items-center p-3">
         <div class="d-flex justify-content-center align-items-center mt-3 w-100 p-3">
           <div class="card" style="height: 20vh; width: 100%;">
             <div class="card-header">
-              Sensor nr: 17
+              Sensor nr: {{ sensor.sensorNr }}
             </div>
             <div class="card-body text-center">
-              <h5 class="card-title">Tokens: 17</h5>
-              <p class="card-text">sensor address: ABC</p>
+              <h5 class="card-title">Tokens: {{ sensor.balance }}</h5>
+              <p class="card-text">Address: {{ sensor.address }}</p>
             </div>
           </div>
         </div>

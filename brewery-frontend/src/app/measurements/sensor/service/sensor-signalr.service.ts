@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import {SensorData} from '../model/sensor.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,17 @@ export class SensorSignalRService {
   }
 
 
-  onSensorDataReceived(callback: (sensorData: any) => void): void {
-    this.connection.on('ReceiveSensorData', callback);
+  onSensorDataReceived(callback: (sensorData: SensorData) => void): void {
+    this.connection.on('ReceiveSensorData', (data: any) => {
+      const mappedData: SensorData = {
+        sensorNr: data.sensorNr,
+        sensorType: data.sensorType,
+        value: parseFloat(data.value),
+        dateTime: new Date(data.date)
+      };
+
+      callback(mappedData);
+    });
   }
 
   stopConnection(): void {

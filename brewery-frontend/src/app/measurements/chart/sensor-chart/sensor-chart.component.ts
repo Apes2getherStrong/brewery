@@ -35,8 +35,6 @@ export class SensorChartComponent implements OnInit, OnChanges {
       axes: [
         {
           type: 'time',
-          interval: { step: 1000},
-          nice: false,
           position: 'bottom',
           title: {
             text: 'Date & Time',
