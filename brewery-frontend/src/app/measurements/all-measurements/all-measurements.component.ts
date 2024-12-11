@@ -97,6 +97,9 @@ export class AllMeasurementsComponent implements OnInit {
 
     this.getData();
 
+    //mock data for testing:
+    //this.displayedSensorData = this.sensorService.generateMockData();
+    //this.sensorData = this.sensorService.generateMockData();
   }
 
   initDateAndTime(): void {

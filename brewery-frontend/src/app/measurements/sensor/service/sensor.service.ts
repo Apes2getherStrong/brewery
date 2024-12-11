@@ -16,7 +16,15 @@ export class SensorService {
       .set('sensorNr', sensorNr.toString())
       .set('howManyRecords', howManyRecords.toString());
 
-    return this.http.get<SensorData[]>(`${this.apiUrl}/latest`, { params });
+    return this.http.get<SensorData[]>(`${this.apiUrl}/latest`, { params }).pipe(
+      map((data: any[]) =>
+        data.map(item => ({
+          ...item,
+          value: parseFloat(item.value),
+          dateTime: new Date(item.date),
+        }))
+      )
+    );
   }
 
   getLatestSensorAvg(sensorNr: number, howManyRecords: number): Observable<number> {
@@ -58,7 +66,7 @@ export class SensorService {
     );
   }
 
-  private generateMockData(): SensorData[] {
+  public generateMockData(): SensorData[] {
     const randomSensorData: SensorData[] = [];
     const startDate = new Date(2023, 2, 1);
     const sensorTypes = Object.values(SENSOR_TYPE);

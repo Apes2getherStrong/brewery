@@ -1,8 +1,11 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {SENSOR_TYPE, SensorData} from '../../sensor/model/sensor.model';
 import { AgCharts } from 'ag-charts-angular';
-import { AgChartOptions } from 'ag-charts-community';
+import { AgChartOptions, time } from 'ag-charts-community';
 import {ThemeService} from '../../../service/theme.service';
+import {timeInterval, TimeInterval} from 'rxjs/internal/operators/timeInterval';
+import {Time} from '@angular/common';
+
 
 @Component({
   selector: 'app-sensor-chart',
@@ -32,6 +35,8 @@ export class SensorChartComponent implements OnInit, OnChanges {
       axes: [
         {
           type: 'time',
+          interval: { step: 1000},
+          nice: false,
           position: 'bottom',
           title: {
             text: 'Date & Time',

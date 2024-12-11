@@ -19,15 +19,24 @@ export class SensorSignalRService {
     this.connection
       .start()
       .then(() => {
-        console.log('Połączono z SignalR');
+        console.log('[SignalR] connected');
       })
       .catch(err => {
-        console.error('Błąd połączenia z SignalR:', err);
+        console.error('[SignalR] connection error', err);
       });
   }
 
 
   onSensorDataReceived(callback: (sensorData: any) => void): void {
     this.connection.on('ReceiveSensorData', callback);
+  }
+
+  stopConnection(): void {
+    if (this.connection) {
+      this.connection
+        .stop()
+        .then(() => console.log('[SignalR] connection stopped'))
+        .catch(err => console.error('[SignalR] Error stopping SignalR connection:', err));
+    }
   }
 }

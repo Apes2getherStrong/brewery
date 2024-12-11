@@ -1,8 +1,8 @@
-<input type="text" value="AVG:" readonly style="width: 100px">
-<input type="number"  [(ngModel)]="avg" readonly style="width: 100px">
+<input type="text" value="{{this.sensorNr}} AVG:" readonly style="width: 100px">
+<input type="number"  [(ngModel)]="this.sensorAvg" readonly style="width: 100px">
 
 <app-sensor-table
-  [rowData]="sensorData"
+  [rowData]="this.sensorRecentData"
   [columnDefs]="colDefs"
   [defaultColDef]="defaultColDef"
   [pagination]="false"
