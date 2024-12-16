@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         builder => builder
-            .WithOrigins("http://localhost:4200") // Adres twojego frontendu
+            .WithOrigins("http://localhost:4200", "http://localhost:80", "http://localhost:8005")
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials());

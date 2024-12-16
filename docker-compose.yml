@@ -43,5 +43,14 @@ services:
       - MqttSettings__Host=mosquitto
       - MqttSettings__Port=1883
 
+  frontend:
+    build:
+      context: ./brewery-frontend
+      dockerfile: Dockerfile
+    container_name: brewery-frontend
+    ports:
+      - "8005:80"
+    depends_on:
+      - backend
 volumes:
   mongo-data:
