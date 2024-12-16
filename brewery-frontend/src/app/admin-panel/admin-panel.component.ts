@@ -24,7 +24,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   constructor(private sensorService: SensorService) {}
 
   ngOnInit(): void {
-    this.refreshSubscription = interval(2000)
+    this.refreshSubscription = interval(1000)
       .pipe(
         switchMap(() => this.sensorService.getSensorsInfo())
       )

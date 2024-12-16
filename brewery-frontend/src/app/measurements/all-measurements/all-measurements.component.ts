@@ -6,7 +6,6 @@ import {ColDef, GridApi, GridReadyEvent} from 'ag-grid-community';
 import '@ag-grid-community/styles/ag-grid.css';
 import '@ag-grid-community/styles/ag-theme-quartz.css';
 import {Component, OnInit} from '@angular/core';
-import {ThemeService} from '../../service/theme.service';
 import {SensorData} from '../sensor/model/sensor.model';
 import {SensorService} from '../sensor/service/sensor.service';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -44,7 +43,6 @@ export class AllMeasurementsComponent implements OnInit {
 
   protected readonly faDownload = faDownload;
 
-  themeClass = 'ag-theme-quartz-dark';
 
   sensorData: SensorData[] | null = null;
   displayedSensorData: SensorData[] | null = null;
@@ -83,14 +81,10 @@ export class AllMeasurementsComponent implements OnInit {
 
 
   constructor(private sensorService: SensorService,
-              private themeService: ThemeService,
               private stringDateTimeConvertorService: StringDateTimeConverterService,
               private csvToJsonConverterService: CsvToJsonConverterService) {}
 
   ngOnInit(): void {
-    this.themeService.isDarkMode$.subscribe((isDarkMode) => {
-      this.themeClass = isDarkMode ? 'ag-theme-quartz-dark' : 'ag-theme-alpine';
-    });
 
     this.initDateAndTime()
 
@@ -172,14 +166,15 @@ export class AllMeasurementsComponent implements OnInit {
 
 
   onShowCsv(): void {
-    const csvData = this.gridApi.getDataAsCsv();
-    if (!csvData) {
-      console.error('No data available for export.');
-      return;
+    if(this.gridApi) {
+      const csvData = this.gridApi.getDataAsCsv();
+      if (!csvData) {
+        console.error('No data available for export.');
+        return;
+      }
+
+      this.csvData = csvData
     }
-
-    this.csvData = csvData
-
   }
 
   onDownloadCsv() {
@@ -210,13 +205,15 @@ export class AllMeasurementsComponent implements OnInit {
 
 
   onShowJson(): void {
-    const csvData = this.gridApi.getDataAsCsv();
-    if (!csvData) {
-      console.error('No data available for export.');
-      return;
-    }
+    if(this.gridApi) {
+      const csvData = this.gridApi.getDataAsCsv();
+      if (!csvData) {
+        console.error('No data available for export.');
+        return;
+      }
 
-    this.jsonData = this.csvToJsonConverterService.convertCsvToJson(csvData);
+      this.jsonData = this.csvToJsonConverterService.convertCsvToJson(csvData);
+    }
   }
 
   onFilterChanged() {
