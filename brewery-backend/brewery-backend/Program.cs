@@ -26,7 +26,6 @@ builder.Services.AddSingleton(provider =>
     return new BlockchainService(rpcUrl, contractAddress, adminPrivateKey, abi);
 });
 
-// Dodanie polityki CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -39,14 +38,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-// Zastosowanie polityki CORS
 app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();

@@ -59,17 +59,21 @@ public class MqttService
 
             try
             {
-                // Zapisz dane do bazy danych
                 await _mongoDbService.SensorDataCollection.InsertOneAsync(sensorData);
-                
-                // Wysyłanie danych do klientów SignalR
                 await _sensorHubContext.Clients.All.SendAsync("ReceiveSensorData", sensorData);
-                
-                await _blockchainService.RewardSensorAsync(sensorData.SensorNr, 1.0m);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Wystąpił błąd podczas zapisu do MongoDB lub blockchaina: {ex.Message}");
+                Console.WriteLine($"Wystąpił błąd podczas zapisu do MongoDB lub przy wysylaniu SingnalR: {ex.Message}");
+            }
+
+            try
+            {
+                _blockchainService.RewardSensorAsync(sensorData.SensorNr);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Wystąpił błąd podczas zapisu do  blockchaina: {exception.Message}");
             }
 
             // Obsługa różnych tematów
