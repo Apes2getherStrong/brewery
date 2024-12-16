@@ -39,7 +39,7 @@ export class SensorTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.themeService.isDarkMode$.subscribe((isDarkMode) => {
-      //this.themeClass = isDarkMode ? 'ag-theme-quartz-dark' : 'ag-theme-alpine';
+      this.themeClass = isDarkMode ? 'ag-theme-quartz-dark' : 'ag-theme-alpine';
     });
   }
 
