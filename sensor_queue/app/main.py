@@ -6,17 +6,27 @@ import argparse
 from commands import generate_data, generate_multiple_times, get_all_sensors, write_to_sensor
 
 def initialize_sensors():
-    sensors = []
+    # sensors = []
     # Define the sensor types and their counts
-    sensor_types = [
-        (TemperatureSensor, 4),
-        (AlcoholContentSensor, 4),
-        (PressureSensor, 4),
-        (PHSensor, 4)
+    # sensor_types = [
+    #     (TemperatureSensor, 4, -10, 40, 10),  # Min, Max, Rate (times per minute)
+    #     (AlcoholContentSensor, 4, 0, 15, 5),
+    #     (PressureSensor, 4, 1, 5, 8),
+    #     (PHSensor, 4, 3, 8, 12)
+    # ]
+    # for sensor_class, count, min_val, max_val, rate in sensor_types:
+    #     sensors.extend(sensor_class(min_val, max_val, rate) for _ in range(count))
+        
+        
+    sensors = [
+        TemperatureSensor(-10, 40, 10), TemperatureSensor(-9, 42, 11), TemperatureSensor(-8, 44, 12), TemperatureSensor(-7, 46, 13),
+        AlcoholContentSensor(0, 15, 5), AlcoholContentSensor(1, 16, 6), AlcoholContentSensor(2, 17, 7), AlcoholContentSensor(3, 18, 8),
+        PressureSensor(1, 5, 8), PressureSensor(2, 6, 9), PressureSensor(3, 7, 10), PressureSensor(4, 8, 11),
+        PHSensor(3, 8, 12), PHSensor(4, 9, 13), PHSensor(5, 10, 14), PHSensor(6, 11, 15)
     ]
-    for sensor_class, count in sensor_types:
-        sensors.extend(sensor_class() for _ in range(count))
+    
     return sensors
+
 
 def handle_command(mqtt_client, sensors, command, *args):
     if command == "generate":
@@ -42,6 +52,7 @@ def handle_command(mqtt_client, sensors, command, *args):
 
 def main():
     mqtt_client = MQTTClient(os.getenv('MQTT_BROKER'))
+    # mqtt_client = MQTTClient('localhost')
     mqtt_client.connect()
     mqtt_client.loop() 
 
