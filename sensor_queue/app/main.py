@@ -19,7 +19,7 @@ def initialize_sensors():
         
         
     sensors = [
-        TemperatureSensor(-10, 40, 10), TemperatureSensor(-9, 42, 11), TemperatureSensor(-8, 44, 12), TemperatureSensor(-7, 46, 13),
+        TemperatureSensor(5, 15, 10), TemperatureSensor(4, 13, 11), TemperatureSensor(5, 16, 12), TemperatureSensor(6, 18, 13),
         AlcoholContentSensor(0, 15, 5), AlcoholContentSensor(1, 16, 6), AlcoholContentSensor(2, 17, 7), AlcoholContentSensor(3, 18, 8),
         PressureSensor(1, 5, 8), PressureSensor(2, 6, 9), PressureSensor(3, 7, 10), PressureSensor(4, 8, 11),
         PHSensor(3, 8, 12), PHSensor(4, 9, 13), PHSensor(5, 10, 14), PHSensor(6, 11, 15)
