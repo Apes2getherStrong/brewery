@@ -12,7 +12,7 @@ services:
       - ./sensor_queue/mosquitto/log:/mosquitto/log
 
   sensors:
-    image: kondziow/brewery-sensor-queue:latest
+    image: turboblaster44/sensors:latest
     container_name: sensors
     depends_on:
       - mosquitto
