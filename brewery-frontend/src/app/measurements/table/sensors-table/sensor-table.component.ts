@@ -3,9 +3,7 @@ import {AgGridAngular} from 'ag-grid-angular';
 import {ColDef, GridApi, GridReadyEvent} from 'ag-grid-community';
 import {ThemeService} from '../../../service/theme.service';
 import {SensorData} from '../../sensor/model/sensor.model';
-import '@ag-grid-community/styles/ag-theme-quartz.css';
-import '@ag-grid-community/styles/ag-theme-quartz.min.css';
-import '@ag-grid-community/styles/ag-grid.css';
+
 
 
 @Component({

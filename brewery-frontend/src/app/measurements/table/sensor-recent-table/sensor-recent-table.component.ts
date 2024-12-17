@@ -29,7 +29,7 @@ export class SensorRecentTableComponent implements OnInit{
   colDefs: ColDef<SensorData>[] = [
     {field: 'sensorType', headerName: 'Sensor Type', flex: 2},
     {field: 'sensorNr', headerName: 'Sensor Number', flex: 1},
-    {field: 'value', headerName: 'Value', flex: 1},
+    {field: 'value', headerName: 'Value', flex: 1,  valueFormatter: this.formatValueBasedOnType.bind(this)},
     {field: 'dateTime', headerName: 'Date/Time', valueFormatter: this.formatDate, flex: 2},
   ];
 
@@ -112,5 +112,26 @@ export class SensorRecentTableComponent implements OnInit{
     return date ? new Date(date).toLocaleString() : '';
   }
 
+  formatValueBasedOnType(params: any): string {
+    const data = params.data as SensorData; // Access the entire row data
+    const value = params.value;
+
+    if (data && value !== null && value !== undefined) {
+      switch (data.sensorType) {
+        case 'TEMPERATURE':
+          return `${value} °C`;
+        case 'ALCOHOL_CONTENT_PERCENT':
+          return `${value} %`;
+        case 'PRESSURE':
+          return `${value} Pa`;
+        case 'PH':
+          return `${value} Ph`;
+        default:
+          return value.toString();
+      }
+    }
+
+    return '';
+  }
 
 }

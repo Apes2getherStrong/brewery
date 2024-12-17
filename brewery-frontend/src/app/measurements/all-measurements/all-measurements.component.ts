@@ -6,7 +6,7 @@ import {ColDef, GridApi, GridReadyEvent} from 'ag-grid-community';
 import '@ag-grid-community/styles/ag-grid.css';
 import '@ag-grid-community/styles/ag-theme-quartz.css';
 import {Component, OnInit} from '@angular/core';
-import {SensorData} from '../sensor/model/sensor.model';
+import {SENSOR_TYPE, SensorData} from '../sensor/model/sensor.model';
 import {SensorService} from '../sensor/service/sensor.service';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -52,7 +52,7 @@ export class AllMeasurementsComponent implements OnInit {
   colDefs: ColDef<SensorData>[] = [
     {field: 'sensorType', headerName: 'Sensor Type'},
     {field: 'sensorNr', headerName: 'Sensor Number'},
-    {field: 'value', headerName: 'Value'},
+    {field: 'value', headerName: 'Value',  valueFormatter: this.formatValueBasedOnType.bind(this),},
     {field: 'dateTime', headerName: 'Date/Time', valueFormatter: this.formatDate, filter: DateTimeFilterComponent},
   ];
 
@@ -88,11 +88,11 @@ export class AllMeasurementsComponent implements OnInit {
 
     this.initDateAndTime()
 
-    this.getData();
+    //this.getData();
 
     //mock data for testing:
-    //this.displayedSensorData = this.sensorService.generateMockData();
-    //this.sensorData = this.sensorService.generateMockData();
+    this.displayedSensorData = this.sensorService.generateMockData();
+    this.sensorData = this.sensorService.generateMockData();
   }
 
   initDateAndTime(): void {
@@ -235,5 +235,27 @@ export class AllMeasurementsComponent implements OnInit {
   onFirstDataRendered() {
     this.onShowJson();
     this.onShowCsv();
+  }
+
+  formatValueBasedOnType(params: any): string {
+    const data = params.data as SensorData;
+    const value = params.value;
+
+    if (data && value !== null && value !== undefined) {
+      switch (data.sensorType) {
+        case SENSOR_TYPE.TEMPERATURE:
+          return `${value} °C`;
+        case SENSOR_TYPE.ALCOHOL_CONTENT_PERCENT:
+          return `${value} %`;
+        case SENSOR_TYPE.PRESSURE:
+          return `${value} Bar`;
+        case SENSOR_TYPE.PH:
+          return `${value} Ph`;
+        default:
+          return value.toString();
+      }
+    }
+
+    return '';
   }
 }
