@@ -32,7 +32,7 @@ def generate_multiple_times(sensors, mqtt_client, count):
 def write_to_sensor(sensors, mqtt_client, sensor_id, value):
     """Write a specific value to a sensor."""
     try:
-        sensor = sensors[sensor_id+1]
+        sensor = sensors[sensor_id-1]
         data = sensor.generate_data(float(value))
         topic = sensor.NAME
         mqtt_client.publish(topic,data)
