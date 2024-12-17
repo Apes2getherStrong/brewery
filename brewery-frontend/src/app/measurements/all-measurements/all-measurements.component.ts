@@ -20,8 +20,9 @@ import {StringDateTimeConverterService} from '../table/converter/string-date-tim
 import {faDownload} from '@fortawesome/free-solid-svg-icons';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {CsvToJsonConverterService} from '../table/converter/csv-to-json-converter.service';
-import {SensorChartComponent} from '../chart/sensor-chart/sensor-chart.component';
 import {SensorTableComponent} from '../table/sensors-table/sensor-table.component';
+import {SensorAgChart} from '../chart/sensor-ag-chart/sensor-ag-chart.component';
+import {SensorsApexChartComponent} from '../chart/sensors-chart/sensors-apex-chart.component';
 
 @Component({
   standalone: true,
@@ -35,7 +36,7 @@ import {SensorTableComponent} from '../table/sensors-table/sensor-table.componen
     MatIconModule,
     MatButtonModule,
     FormsModule,
-    CommonModule, FaIconComponent, SensorChartComponent, SensorTableComponent, SensorTableComponent,],
+    CommonModule, FaIconComponent, SensorAgChart, SensorTableComponent, SensorTableComponent, SensorsApexChartComponent,],
   templateUrl: './all-measurements.component.html',
   styleUrl: './all-measurements.component.css',
 })
@@ -88,11 +89,11 @@ export class AllMeasurementsComponent implements OnInit {
 
     this.initDateAndTime()
 
-    //this.getData();
+    this.getData();
 
     //mock data for testing:
-    this.displayedSensorData = this.sensorService.generateMockData();
-    this.sensorData = this.sensorService.generateMockData();
+    //this.displayedSensorData = this.sensorService.generateMockData();
+    //this.sensorData = this.sensorService.generateMockData();
   }
 
   initDateAndTime(): void {

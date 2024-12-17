@@ -1,20 +1,18 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {SENSOR_TYPE, SensorData} from '../../sensor/model/sensor.model';
 import { AgCharts } from 'ag-charts-angular';
-import { AgChartOptions, time } from 'ag-charts-community';
+import { AgChartOptions } from 'ag-charts-community';
 import {ThemeService} from '../../../service/theme.service';
-import {timeInterval, TimeInterval} from 'rxjs/internal/operators/timeInterval';
-import {Time} from '@angular/common';
 
 
 @Component({
-  selector: 'app-sensor-chart',
+  selector: 'app-sensor-ag-chart',
   standalone: true,
   imports: [AgCharts],
-  templateUrl: './sensor-chart.component.html',
-  styleUrls: ['./sensor-chart.component.css'],
+  templateUrl: './sensor-ag-chart.component.html',
+  styleUrls: ['./sensor-ag-chart.component.css'],
 })
-export class SensorChartComponent implements OnInit, OnChanges {
+export class SensorAgChart implements OnInit, OnChanges {
   //https://www.ag-grid.com/charts/angular/scatter-series/
 
   @Input() sensorData: SensorData[] | null = null;

@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NgForOf} from '@angular/common';
 import {SensorRecentTableComponent} from '../table/sensor-recent-table/sensor-recent-table.component';
 import {SensorSignalRService} from '../sensor/service/sensor-signalr.service';
+import {SensorsApexChartComponent} from '../chart/sensors-chart/sensors-apex-chart.component';
 
 @Component({
   selector: 'app-recent-measurements',
